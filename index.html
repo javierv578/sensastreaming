@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SENSASTREAMING — Reportajes destacados</title>
+<meta name="description" content="Sensastreaming: reportajes, juicios y entrevistas que la prensa tradicional deja fuera de cuadro.">
+<link rel="icon" type="image/png" href="https://i.imgur.com/8Thck7f.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#catalogo">Saltar al catálogo</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="#top" class="brand">
+      <img src="https://i.imgur.com/8Thck7f.png" alt="Sensastreaming">
+    </a>
+
+    <nav class="site-nav" id="siteNav">
+      <a href="#top">Inicio</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#acerca">Acerca de</a>
+    </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="ticker" role="marquee" aria-label="Últimas historias">
+  <span class="ticker-sr">Últimas historias: Mujer llorando tras ser despedida. Sujeto en el juzgado. Mujer entrevistada. Mujer entrevistada en auto.</span>
+  <div class="ticker-inner" aria-hidden="true">
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Mujer llorando tras ser despedida</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Sujeto en el juzgado</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Mujer entrevistada</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Mujer entrevistada en auto</span>
+    </div>
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Mujer llorando tras ser despedida</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Sujeto en el juzgado</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Mujer entrevistada</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Mujer entrevistada en auto</span>
+    </div>
+  </div>
+</div>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-bg" style="background-image:url('https://i.imgur.com/ZKIbFsF.jpeg');"></div>
+    <div class="hero-content">
+      <img class="hero-logo" src="https://i.imgur.com/8Thck7f.png" alt="Sensastreaming">
+      <p class="hero-tagline">El lado humano de la noticia, sin cortes.</p>
+      <div class="hero-actions">
+        <a href="#catalogo" class="btn btn-primary">▶ Ver catálogo</a>
+        <a href="#acerca" class="btn btn-secondary">Más información</a>
+      </div>
+    </div>
+    <a href="#catalogo" class="scroll-cue" aria-label="Bajar al catálogo">
+      <span></span>
+    </a>
+  </section>
+
+  <section class="catalog" id="catalogo">
+    <div class="section-head">
+      <span class="eyebrow">Catálogo</span>
+      <h2>Reportajes destacados</h2>
+      <p class="section-sub">Pasa el mouse — o desliza en tu celular — para ver un adelanto.</p>
+    </div>
+
+    <div class="row" id="cardRow">
+
+      <article class="card" data-yt="hI8e6JMbuSg" tabindex="0"
+        aria-label="Mujer llorando tras ser despedida. Activar para ver adelanto.">
+        <div class="card-frame">
+          <span class="card-num">N.º 01</span>
+          <div class="card-media">
+            <img src="https://i.imgur.com/ZKIbFsF.jpeg" alt="Mujer llorando tras ser despedida" loading="lazy">
+          </div>
+          <div class="card-scrim">
+            <span class="card-eyebrow">Testimonio</span>
+            <h3 class="card-title">Mujer llorando tras ser despedida</h3>
+            <div class="card-actions">
+              <a class="play-btn" href="https://www.youtube.com/watch?v=hI8e6JMbuSg" target="_blank" rel="noopener" aria-label="Ver reportaje en YouTube: Mujer llorando tras ser despedida">▶ Ver</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-yt="JzhlGWwWn6k" tabindex="0"
+        aria-label="Sujeto en el juzgado. Activar para ver adelanto.">
+        <div class="card-frame">
+          <span class="card-num">N.º 02</span>
+          <div class="card-media">
+            <img src="https://i.imgur.com/p3X7n6U.jpeg" alt="Sujeto en el juzgado" loading="lazy">
+          </div>
+          <div class="card-scrim">
+            <span class="card-eyebrow">Judicial</span>
+            <h3 class="card-title">Sujeto en el juzgado</h3>
+            <div class="card-actions">
+              <a class="play-btn" href="https://youtu.be/JzhlGWwWn6k" target="_blank" rel="noopener" aria-label="Ver reportaje en YouTube: Sujeto en el juzgado">▶ Ver</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-yt="DBuCfMrWrtk" tabindex="0"
+        aria-label="Mujer entrevistada. Activar para ver adelanto.">
+        <div class="card-frame">
+          <span class="card-num">N.º 03</span>
+          <div class="card-media">
+            <img src="https://i.imgur.com/NYeV6bW.jpeg" alt="Mujer entrevistada" loading="lazy">
+          </div>
+          <div class="card-scrim">
+            <span class="card-eyebrow">Entrevista</span>
+            <h3 class="card-title">Mujer entrevistada</h3>
+            <div class="card-actions">
+              <a class="play-btn" href="https://www.youtube.com/watch?v=DBuCfMrWrtk" target="_blank" rel="noopener" aria-label="Ver reportaje en YouTube: Mujer entrevistada">▶ Ver</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-yt="i1BO0bbKCyo" tabindex="0"
+        aria-label="Mujer entrevistada en auto. Activar para ver adelanto.">
+        <div class="card-frame">
+          <span class="card-num">N.º 04</span>
+          <div class="card-media">
+            <img src="https://i.imgur.com/RMKmTpX.jpeg" alt="Mujer entrevistada en auto" loading="lazy">
+          </div>
+          <div class="card-scrim">
+            <span class="card-eyebrow">Entrevista</span>
+            <h3 class="card-title">Mujer entrevistada en auto</h3>
+            <div class="card-actions">
+              <a class="play-btn" href="https://www.youtube.com/watch?v=i1BO0bbKCyo" target="_blank" rel="noopener" aria-label="Ver reportaje en YouTube: Mujer entrevistada en auto">▶ Ver</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="about" id="acerca">
+    <div class="about-inner">
+      <span class="eyebrow">Acerca de</span>
+      <h2>Sensastreaming</h2>
+      <p>Sensastreaming reúne reportajes, juicios y entrevistas que la prensa tradicional suele dejar fuera de cuadro: despidos, procesos judiciales y testimonios en primera persona. Una ventana directa a las historias detrás de la noticia.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <img src="https://i.imgur.com/8Thck7f.png" alt="Sensastreaming" class="footer-logo">
+  <p>© 2026 Sensastreaming — Plataforma demostrativa. Los videos enlazados pertenecen a sus respectivos autores en YouTube.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
