@@ -1,9 +1,91 @@
 /* ==========================================================================
+   SENSASTREAMING — pantalla de carga (splash screen)
+   Bloque independiente: si la página no tiene #splashScreen (catalogo.html,
+   acerca-de.html) no hace nada. Dura 10 segundos exactos y luego se
+   desvanece. La barra de progreso y la posición del stickman se calculan
+   en el mismo requestAnimationFrame para que avancen siempre al mismo
+   ritmo — así el "paso" queda sincronizado con la velocidad de carga.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var splash = document.getElementById("splashScreen");
+  if (!splash) return; // esta página no tiene splash screen
+
+  var fill = document.getElementById("splashProgressFill");
+  var track = document.getElementById("splashProgressTrack");
+  var percentEl = document.getElementById("splashPercent");
+  var stickman = document.getElementById("splashStickman");
+
+  var DURATION = 10000; // 10 segundos exactos
+  var STICKMAN_WIDTH = 22; // debe calzar con el ancho del stickman en el CSS
+  var wrapWidth = 0;
+  var startTime = null;
+  var finished = false;
+
+  document.documentElement.classList.add("splash-lock");
+
+  function measure() {
+    var wrap = stickman ? stickman.parentElement : null;
+    wrapWidth = wrap ? wrap.clientWidth : 0;
+  }
+
+  function render(pct) {
+    if (fill) fill.style.width = pct + "%";
+    if (track) track.setAttribute("aria-valuenow", String(pct));
+    if (percentEl) percentEl.textContent = pct + "%";
+    if (stickman) {
+      var maxLeft = Math.max(0, wrapWidth - STICKMAN_WIDTH);
+      stickman.style.left = (maxLeft * (pct / 100)) + "px";
+    }
+  }
+
+  function finish() {
+    if (finished) return;
+    finished = true;
+    render(100);
+    splash.classList.add("splash-hidden");
+    document.documentElement.classList.remove("splash-lock");
+
+    var removed = false;
+    function remove() {
+      if (removed) return;
+      removed = true;
+      if (splash.parentNode) splash.parentNode.removeChild(splash);
+    }
+    splash.addEventListener("transitionend", remove);
+    setTimeout(remove, 900); // respaldo si transitionend no llega a disparar
+  }
+
+  function tick(now) {
+    if (startTime === null) startTime = now;
+    var elapsed = now - startTime;
+    var pct = Math.min(100, Math.floor((elapsed / DURATION) * 100));
+    render(pct);
+
+    if (elapsed < DURATION) {
+      requestAnimationFrame(tick);
+    } else {
+      finish();
+    }
+  }
+
+  measure();
+  window.addEventListener("resize", measure);
+  requestAnimationFrame(tick);
+})();
+
+/* ==========================================================================
    SENSASTREAMING — interactions
-   - Header turns solid on scroll
-   - Mobile nav toggle
-   - Cards: hover (desktop) / tap (touch) / auto-preview while centered
-     during a swipe (mobile) all trigger a short delayed YouTube preview
+   Compartido por index.html, catalogo.html y acerca-de.html.
+   Cada bloque revisa si sus elementos existen antes de engancharse, así el
+   mismo archivo sirve para páginas que no tienen catálogo, tabs o reloj.
+
+   - Header que se vuelve sólido al hacer scroll
+   - Menú móvil
+   - Reloj "EN VIVO" con la hora de Santiago de Chile (America/Santiago)
+   - Tarjetas: hover (desktop) / tap (touch) / auto-preview centrado (mobile)
+   - Tabs de filtro por categoría (catalogo.html)
    ========================================================================== */
 
 (function () {
@@ -17,25 +99,28 @@
 
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var hasHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-  var PREVIEW_DELAY = 500; // ms before the trailer preview loads
+  var PREVIEW_DELAY = 500; // ms antes de cargar el adelanto
 
   /* ---------------------------------------------------------------------
-     Header: solid background once the page has scrolled a little
+     Header: fondo sólido apenas se hace scroll
      --------------------------------------------------------------------- */
   function onScroll() {
+    if (!header) return;
     if (window.scrollY > 40) {
       header.classList.add("scrolled");
     } else {
       header.classList.remove("scrolled");
     }
   }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  if (header) {
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
 
   /* ---------------------------------------------------------------------
-     Mobile nav toggle
+     Menú móvil
      --------------------------------------------------------------------- */
-  if (navToggle) {
+  if (navToggle && siteNav) {
     navToggle.addEventListener("click", function () {
       var isOpen = siteNav.classList.toggle("open");
       navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
@@ -50,7 +135,54 @@
   }
 
   /* ---------------------------------------------------------------------
-     Card preview logic
+     Reloj "EN VIVO" — hora de Santiago de Chile
+     Usa el IANA timezone "America/Santiago", así el offset (UTC-3 / UTC-4)
+     se resuelve solo según la fecha, sin tener que calcular el horario de
+     verano a mano.
+     --------------------------------------------------------------------- */
+  function initLiveClock() {
+    var timeEl = document.getElementById("liveClockTime");
+    var offsetEl = document.getElementById("liveClockOffset");
+    if (!timeEl) return;
+
+    var timeFormatter = new Intl.DateTimeFormat("es-CL", {
+      timeZone: "America/Santiago",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false
+    });
+
+    var offsetFormatter = null;
+    try {
+      offsetFormatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: "America/Santiago",
+        timeZoneName: "shortOffset"
+      });
+    } catch (err) {
+      offsetFormatter = null; // navegador sin soporte para "shortOffset"
+    }
+
+    function getOffsetLabel(date) {
+      if (!offsetFormatter) return "";
+      var parts = offsetFormatter.formatToParts(date);
+      var tzPart = parts.filter(function (p) { return p.type === "timeZoneName"; })[0];
+      return tzPart ? tzPart.value.replace("GMT", "UTC") : "";
+    }
+
+    function tick() {
+      var now = new Date();
+      timeEl.textContent = timeFormatter.format(now);
+      if (offsetEl) offsetEl.textContent = getOffsetLabel(now);
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  }
+  initLiveClock();
+
+  /* ---------------------------------------------------------------------
+     Lógica de preview de tarjetas
      --------------------------------------------------------------------- */
   function buildEmbedUrl(id) {
     return "https://www.youtube.com/embed/" + id +
@@ -63,7 +195,7 @@
     cards.forEach(function (c) { if (c !== card) deactivate(c); });
     card.classList.add("active");
 
-    if (prefersReducedMotion) return; // description/scrim only, no video
+    if (prefersReducedMotion) return; // solo texto/scrim, sin video
 
     clearTimeout(card._previewTimer);
     card._previewTimer = setTimeout(function () {
@@ -97,7 +229,7 @@
   }
 
   cards.forEach(function (card) {
-    // Desktop: real hover + keyboard focus
+    // Desktop: hover real + foco de teclado
     if (hasHover) {
       card.addEventListener("mouseenter", function () { activate(card); });
       card.addEventListener("mouseleave", function () { deactivate(card); });
@@ -105,11 +237,11 @@
       card.addEventListener("blur", function () { deactivate(card); });
     }
 
-    // Click / tap anywhere on an already-active card opens the video.
-    // On a not-yet-active card (touch, or a click that outran hover) it
-    // just triggers the preview instead of jumping straight to YouTube.
+    // Click / tap en una tarjeta ya activa abre el video.
+    // En una tarjeta aún no activa (touch, o un click que le ganó al hover)
+    // solo dispara el preview.
     card.addEventListener("click", function (e) {
-      if (e.target.closest(".play-btn")) return; // let the link do its job
+      if (e.target.closest(".play-btn")) return; // el link hace lo suyo
       if (card.classList.contains("active")) {
         openCard(card);
       } else {
@@ -130,17 +262,17 @@
     });
   });
 
-  // Close the open preview when tapping/clicking outside the row
+  // Cierra el preview abierto al hacer click/tap fuera de la fila
   document.addEventListener("click", function (e) {
-    if (row.contains(e.target)) return;
+    if (!row || row.contains(e.target)) return;
     cards.forEach(deactivate);
   });
 
   /* ---------------------------------------------------------------------
-     Touch devices: as the row is swiped, whichever card sits centered
-     gets previewed automatically — mirrors "deslizar para ver un adelanto"
+     Touch: mientras se desliza la fila, la tarjeta centrada se
+     previsualiza sola — refleja "deslizar para ver un adelanto"
      --------------------------------------------------------------------- */
-  if (!hasHover && "IntersectionObserver" in window) {
+  if (row && !hasHover && "IntersectionObserver" in window) {
     var centerObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -154,5 +286,31 @@
       { root: row, threshold: [0, 0.65, 1], rootMargin: "0px -20% 0px -20%" }
     );
     cards.forEach(function (card) { centerObserver.observe(card); });
+  }
+
+  /* ---------------------------------------------------------------------
+     Tabs de filtro por categoría (catalogo.html)
+     --------------------------------------------------------------------- */
+  var filterTabs = Array.prototype.slice.call(document.querySelectorAll(".filter-tab"));
+
+  if (filterTabs.length && cards.length) {
+    filterTabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        var filter = tab.getAttribute("data-filter");
+
+        filterTabs.forEach(function (t) {
+          t.classList.remove("active");
+          t.setAttribute("aria-selected", "false");
+        });
+        tab.classList.add("active");
+        tab.setAttribute("aria-selected", "true");
+
+        cards.forEach(function (card) {
+          var matches = filter === "todos" || card.getAttribute("data-category") === filter;
+          card.classList.toggle("filtered-out", !matches);
+          if (!matches) deactivate(card);
+        });
+      });
+    });
   }
 })();
