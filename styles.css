@@ -13,9 +13,9 @@
 
 :root {
   /* ---- Superficie ---- */
-  --bg-void: #08080a;
-  --bg-surface: #151518;
-  --bg-surface-2: #1e1e22;
+  --bg-void: #130622;
+  --bg-surface: #1d0d33;
+  --bg-surface-2: #281445;
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.16);
 
@@ -496,7 +496,7 @@ html.splash-lock body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(100deg, rgba(8,8,10,.96) 0%, rgba(8,8,10,.72) 32%, rgba(8,8,10,.15) 62%, transparent 85%);
+  background: linear-gradient(100deg, rgba(19,6,34,.96) 0%, rgba(19,6,34,.72) 32%, rgba(19,6,34,.15) 62%, transparent 85%);
   z-index: -1;
 }
 
@@ -894,6 +894,20 @@ html.splash-lock body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.25rem;
+}
+
+.team-photo {
+  display: flex;
+  justify-content: center;
+  margin: 2.5rem auto 0;
+}
+
+.team-photo img {
+  width: min(560px, 100%);
+  height: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
 }
 
 .team-card {
