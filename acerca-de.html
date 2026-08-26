@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acerca de — Sensastreaming</title>
+<meta name="description" content="Quiénes somos y qué hay detrás de Sensastreaming.">
+<link rel="icon" type="image/png" href="https://i.imgur.com/6NUFAMf.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="index.html" class="brand">
+      <img src="https://i.imgur.com/6NUFAMf.png" alt="Sensastreaming">
+    </a>
+
+    <nav class="site-nav" id="siteNav">
+      <a href="index.html">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="acerca-de.html" class="active" aria-current="page">Acerca de</a>
+    </nav>
+
+    <div class="live-clock" id="liveClock" aria-hidden="true">
+      <span class="live-dot"></span>
+      <span class="live-clock-city">Santiago</span>
+      <span class="live-clock-time" id="liveClockTime">00:00:00</span>
+      <span class="live-clock-offset" id="liveClockOffset"></span>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="siteNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="ticker" role="marquee" aria-label="Últimas historias">
+  <span class="ticker-sr">Últimas historias: ¿Como llegar a la fama? ¿Deporte o Sensasport? ¿Politica o Reality? ¿Influencers o creadores de estigmas?</span>
+  <div class="ticker-inner" aria-hidden="true">
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Como llegar a la fama?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Deporte o Sensasport?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Politica o Reality?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Influencers o creadores de estigmas?</span>
+    </div>
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Como llegar a la fama?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Deporte o Sensasport?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Politica o Reality?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Influencers o creadores de estigmas?</span>
+    </div>
+  </div>
+</div>
+
+<main id="main-content">
+
+  <section class="page-banner">
+    <div class="page-banner-inner">
+      <span class="eyebrow">Acerca de</span>
+      <h1>Sensastreaming</h1>
+      <p>Reportajes, juicios y entrevistas que la prensa tradicional suele dejar fuera de cuadro.</p>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="about-inner">
+      <h2>Qué es Sensastreaming</h2>
+      <p>Sensastreaming reúne reportajes, juicios y entrevistas que la prensa tradicional suele dejar fuera de cuadro: despidos, procesos judiciales y testimonios en primera persona.</p>
+      <p>Una ventana directa a las historias detrás de la noticia, sin cortes ni intermediarios.</p>
+    </div>
+  </section>
+
+  <section class="team-section" id="quienes-somos">
+    <div class="team-head">
+      <span class="eyebrow">Equipo</span>
+      <h2>Quiénes somos</h2>
+      <p>Las personas detrás de cada reportaje, juicio y entrevista publicados en Sensastreaming.</p>
+    </div>
+
+    <div class="team-grid">
+      <article class="team-card">
+        <div class="team-avatar" aria-hidden="true">AA</div>
+        <h3 class="team-name">Alejandro Álvarez</h3>
+        <p class="team-role">Equipo Sensastreaming</p>
+      </article>
+
+      <article class="team-card">
+        <div class="team-avatar" aria-hidden="true">GS</div>
+        <h3 class="team-name">Gabriel Salinas</h3>
+        <p class="team-role">Equipo Sensastreaming</p>
+      </article>
+
+      <article class="team-card">
+        <div class="team-avatar" aria-hidden="true">JV</div>
+        <h3 class="team-name">Javier Vera</h3>
+        <p class="team-role">Equipo Sensastreaming</p>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <img src="https://i.imgur.com/6NUFAMf.png" alt="Sensastreaming" class="footer-logo">
+    <nav class="footer-nav" aria-label="Enlaces del pie de página">
+      <a href="index.html">Inicio</a>
+      <a href="catalogo.html">Catálogo</a>
+      <a href="acerca-de.html">Acerca de</a>
+    </nav>
+    <p>© 2026 Sensastreaming — Plataforma demostrativa. Los videos enlazados pertenecen a sus respectivos autores en YouTube.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
