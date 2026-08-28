@@ -155,8 +155,8 @@ button:focus-visible,
 .site-nav {
   display: flex;
   gap: 1.75rem;
-  font-size: .92rem;
-  font-weight: 500;
+  font-size: 1.15rem;
+  font-weight: 600;
 }
 
 .site-nav a {
@@ -868,6 +868,42 @@ html.splash-lock body {
   margin: 0 0 1rem;
 }
 .about p:last-child { margin-bottom: 0; }
+
+/* ---- "Próximamente" (podcast.html) ---- */
+
+.coming-soon {
+  min-height: 46vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 4vw 5.5rem;
+}
+
+.coming-soon-inner { max-width: 560px; }
+
+.eyebrow-live {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.coming-soon-inner h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  margin: .4rem 0 1rem;
+  background: linear-gradient(90deg, var(--accent-crimson), var(--accent-amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.coming-soon-inner p {
+  color: var(--text-secondary);
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+}
 
 .team-section {
   padding: 4.5rem 4vw;

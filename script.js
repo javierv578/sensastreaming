@@ -1,7 +1,7 @@
 /* ==========================================================================
    SENSASTREAMING — pantalla de carga (splash screen)
    Bloque independiente: si la página no tiene #splashScreen (catalogo.html,
-   acerca-de.html) no hace nada. Dura 10 segundos exactos y luego se
+   acerca-de.html) no hace nada. Dura 5 segundos exactos y luego se
    desvanece. La barra de progreso y la posición del stickman se calculan
    en el mismo requestAnimationFrame para que avancen siempre al mismo
    ritmo — así el "paso" queda sincronizado con la velocidad de carga.
@@ -17,7 +17,7 @@
   var percentEl = document.getElementById("splashPercent");
   var stickman = document.getElementById("splashStickman");
 
-  var DURATION = 10000; // 10 segundos exactos
+  var DURATION = 5000; // 5 segundos exactos
   var STICKMAN_WIDTH = 22; // debe calzar con el ancho del stickman en el CSS
   var wrapWidth = 0;
   var startTime = null;

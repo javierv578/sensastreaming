@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sensastreaming — Reportajes, juicios y entrevistas sin cortes</title>
-<meta name="description" content="Sensastreaming: reportajes, juicios y entrevistas que la prensa tradicional deja fuera de cuadro.">
+<title>Reportajes — Sensastreaming</title>
+<meta name="description" content="Todos los reportajes de Sensastreaming: entrevistas y contenidos, filtrables por categoría.">
 <link rel="icon" type="image/png" href="https://i.imgur.com/6NUFAMf.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,28 +12,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="styles.css">
-<noscript><style>#splashScreen { display: none !important; }</style></noscript>
 </head>
 <body>
 
 <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
-
-<div class="splash-screen" id="splashScreen">
-  <img class="splash-logo" src="https://i.imgur.com/6NUFAMf.png" alt="Sensastreaming">
-  <p class="splash-caption">Preparando la transmisión…</p>
-  <div class="splash-progress-wrap">
-    <div class="stickman" id="splashStickman" aria-hidden="true">
-      <div class="stickman-head"></div>
-      <div class="stickman-body"></div>
-      <div class="stickman-leg left"></div>
-      <div class="stickman-leg right"></div>
-    </div>
-    <div class="progress-track" id="splashProgressTrack" role="progressbar" aria-label="Cargando Sensastreaming" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-      <div class="progress-fill" id="splashProgressFill"></div>
-    </div>
-    <p class="splash-percent" id="splashPercent">0%</p>
-  </div>
-</div>
 
 <header class="site-header" id="siteHeader">
   <div class="header-inner">
@@ -42,8 +24,8 @@
     </a>
 
     <nav class="site-nav" id="siteNav">
-      <a href="index.html" class="active" aria-current="page">Inicio</a>
-      <a href="reportajes.html">Reportajes</a>
+      <a href="index.html">Inicio</a>
+      <a href="reportajes.html" class="active" aria-current="page">Reportajes</a>
       <a href="podcast.html">Podcast</a>
       <a href="acerca-de.html">Acerca de</a>
     </nav>
@@ -81,28 +63,21 @@
 
 <main id="main-content">
 
-  <section class="hero">
-    <div class="hero-bg" style="background-image:url('https://i.imgur.com/ZKIbFsF.jpeg');"></div>
-    <div class="hero-content">
-      <img class="hero-logo" src="https://i.imgur.com/6NUFAMf.png" alt="Sensastreaming">
-      <p class="hero-tagline">El lado humano de la noticia, sin cortes.</p>
-      <div class="hero-actions">
-        <a href="reportajes.html" class="btn btn-primary">▶ Ver reportajes</a>
-        <a href="acerca-de.html" class="btn btn-secondary">Más información</a>
-      </div>
+  <section class="page-banner">
+    <div class="page-banner-inner">
+      <span class="eyebrow">Todos los reportajes</span>
+      <h1>Reportajes</h1>
+      <p>Filtra por categoría o revisa el listado completo. Pasa el mouse — o desliza en tu celular — para ver un adelanto.</p>
     </div>
-    <a href="#destacados" class="scroll-cue" aria-label="Bajar a los destacados">
-      <span></span>
-    </a>
   </section>
 
-  <section class="catalog hero-row" id="destacados">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">Destacados</span>
-        <h2>Reportajes destacados</h2>
-        <p class="section-sub">Pasa el mouse — o desliza en tu celular — para ver un adelanto.</p>
-      </div>
+  <section class="catalog" id="reportajes-completo">
+
+    <div class="filter-tabs" role="tablist" aria-label="Filtrar reportajes por categoría">
+      <button class="filter-tab active" data-filter="todos" role="tab" aria-selected="true">Todos</button>
+      <button class="filter-tab" data-filter="testimonio" role="tab" aria-selected="false">Testimonios</button>
+      <button class="filter-tab" data-filter="judicial" role="tab" aria-selected="false">Judicial</button>
+      <button class="filter-tab" data-filter="entrevista" role="tab" aria-selected="false">Entrevistas</button>
     </div>
 
     <div class="row" id="cardRow">
@@ -175,19 +150,6 @@
         </div>
       </article>
 
-    </div>
-
-    <div class="section-cta">
-      <a href="reportajes.html" class="link-arrow">Ver reportajes completos →</a>
-    </div>
-  </section>
-
-  <section class="about" id="acerca">
-    <div class="about-inner">
-      <span class="eyebrow">Acerca de</span>
-      <h2>Sensastreaming</h2>
-      <p>Sensastreaming reúne reportajes, juicios y entrevistas que la prensa tradicional suele dejar fuera de cuadro: despidos, procesos judiciales y testimonios en primera persona. Una ventana directa a las historias detrás de la noticia.</p>
-      <a href="acerca-de.html" class="link-arrow">Conoce al equipo →</a>
     </div>
   </section>
 
