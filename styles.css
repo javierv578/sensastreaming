@@ -287,6 +287,55 @@ button:focus-visible,
   display: block;
 }
 
+/* ---- Buscador expandible ---- */
+
+.search-widget {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+@media (min-width: 900px) {
+  .search-widget { margin-left: 0; }
+}
+
+.search-input {
+  width: 0;
+  min-width: 0;
+  padding: 0;
+  margin-right: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: .85rem;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: width .3s ease, opacity .2s ease, padding .3s ease, margin-right .3s ease;
+}
+
+.search-input::placeholder { color: var(--text-muted); }
+
+.search-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.search-widget.is-open .search-input {
+  width: min(200px, 45vw);
+  padding: 6px 14px;
+  margin-right: 8px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.search-toggle .icon-close { display: none; }
+.search-widget.is-open .search-toggle .icon-search { display: none; }
+.search-widget.is-open .search-toggle .icon-close { display: block; }
+
 .nav-toggle {
   display: none;
   margin-left: auto;
@@ -1111,7 +1160,10 @@ html.splash-lock body {
    ========================================================================== */
 
 @media (max-width: 640px) {
-  .nav-toggle { display: flex; }
+  .nav-toggle { display: flex; margin-left: 0; }
+  .live-clock { display: none; }
+  .header-divider { display: none; }
+  .header-inner { gap: .75rem; }
 
   .site-nav {
     position: absolute;

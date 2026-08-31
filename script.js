@@ -76,6 +76,55 @@
 })();
 
 /* ==========================================================================
+   SENSASTREAMING — buscador del header
+   Solo abre/cierra la interfaz visualmente; todavía no filtra contenido.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var searchWidget = document.getElementById("searchWidget");
+  if (!searchWidget) return; // esta página no tiene buscador
+
+  var toggleBtn = document.getElementById("searchToggle");
+  var input = document.getElementById("searchInput");
+
+  function openSearch() {
+    searchWidget.classList.add("is-open");
+    toggleBtn.setAttribute("aria-expanded", "true");
+    toggleBtn.setAttribute("aria-label", "Cerrar búsqueda");
+    if (input) {
+      // espera a que la transición de ancho arranque antes de enfocar
+      setTimeout(function () { input.focus(); }, 50);
+    }
+  }
+
+  function closeSearch() {
+    searchWidget.classList.remove("is-open");
+    toggleBtn.setAttribute("aria-expanded", "false");
+    toggleBtn.setAttribute("aria-label", "Buscar");
+    if (input) input.blur();
+  }
+
+  toggleBtn.addEventListener("click", function () {
+    if (searchWidget.classList.contains("is-open")) {
+      closeSearch();
+    } else {
+      openSearch();
+    }
+  });
+
+  // Cierra al hacer click fuera del buscador
+  document.addEventListener("click", function (e) {
+    if (!searchWidget.contains(e.target)) closeSearch();
+  });
+
+  // Cierra con la tecla Escape
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeSearch();
+  });
+})();
+
+/* ==========================================================================
    SENSASTREAMING — interactions
    Compartido por index.html, catalogo.html y acerca-de.html.
    Cada bloque revisa si sus elementos existen antes de engancharse, así el

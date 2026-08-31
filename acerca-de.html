@@ -39,13 +39,21 @@
 
     <span class="header-divider" aria-hidden="true"></span>
 
-    <div class="header-icons">
-      <button type="button" class="icon-btn" aria-label="Buscar" title="Buscar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <div class="search-widget" id="searchWidget">
+      <input type="text" class="search-input" id="searchInput" placeholder="Buscar reportaje..." aria-label="Buscar reportaje">
+      <button type="button" class="icon-btn search-toggle" id="searchToggle" aria-label="Buscar" aria-expanded="false" aria-controls="searchInput">
+        <svg class="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
           <circle cx="11" cy="11" r="7"></circle>
           <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
         </svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+        </svg>
       </button>
+    </div>
+
+    <div class="header-icons">
       <button type="button" class="icon-btn" aria-label="Categorías" title="Categorías">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
           <circle cx="5" cy="5" r="2"></circle>
@@ -57,18 +65,6 @@
           <circle cx="5" cy="19" r="2"></circle>
           <circle cx="12" cy="19" r="2"></circle>
           <circle cx="19" cy="19" r="2"></circle>
-        </svg>
-      </button>
-      <button type="button" class="icon-btn" aria-label="Mi lista" title="Mi lista">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-          <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"></path>
-        </svg>
-      </button>
-      <button type="button" class="icon-btn" aria-label="Perfil" title="Perfil">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-          <circle cx="12" cy="12" r="9"></circle>
-          <circle cx="12" cy="10" r="3"></circle>
-          <path d="M6.5 18.5c1.2-2.3 3.3-3.5 5.5-3.5s4.3 1.2 5.5 3.5"></path>
         </svg>
       </button>
     </div>
