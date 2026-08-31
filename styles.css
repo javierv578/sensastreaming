@@ -154,24 +154,34 @@ button:focus-visible,
 
 .site-nav {
   display: flex;
-  gap: 1.75rem;
+  align-items: center;
+  gap: 8px;
   font-size: 1.15rem;
   font-weight: 600;
 }
 
 .site-nav a {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 8px;
   color: var(--text-primary);
   opacity: .8;
-  padding-bottom: 2px;
-  border-bottom: 2px solid transparent;
-  transition: opacity .2s ease, border-color .2s ease, color .2s ease;
+  background: transparent;
+  transition: background-color .2s ease, opacity .2s ease, color .2s ease;
 }
-.site-nav a:hover { opacity: 1; }
+
+.site-nav a:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
 
 .site-nav a.active {
   opacity: 1;
-  color: var(--accent-amber);
-  border-color: var(--accent-amber);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 /* ---- Reloj "EN VIVO" — Santiago de Chile (desktop) ---- */
@@ -226,6 +236,55 @@ button:focus-visible,
 
 @media (min-width: 900px) {
   .live-clock { display: inline-flex; }
+}
+
+/* ---- Separador + íconos (buscar / categorías / mi lista / perfil), desktop ---- */
+
+.header-divider {
+  display: none;
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (min-width: 900px) {
+  .header-divider { display: block; }
+}
+
+.header-icons {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (min-width: 900px) {
+  .header-icons { display: flex; }
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ffffff;
+  opacity: .8;
+  cursor: pointer;
+  transition: opacity .2s ease;
+}
+
+.icon-btn:hover,
+.icon-btn:focus-visible {
+  opacity: 1;
+}
+
+.icon-btn svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .nav-toggle {
