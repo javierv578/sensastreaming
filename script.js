@@ -77,7 +77,10 @@
 
 /* ==========================================================================
    SENSASTREAMING — buscador del header
-   Solo abre/cierra la interfaz visualmente; todavía no filtra contenido.
+   Estilo Netflix/Prime: al escribir se abre un mini-menú de resultados
+   flotando debajo de la lupa. NO toca ni reordena las tarjetas de la
+   página (por eso funciona igual en todas, incluidas las que no tienen
+   catálogo, como Podcast o Acerca de).
    ========================================================================== */
 (function () {
   "use strict";
@@ -87,6 +90,72 @@
 
   var toggleBtn = document.getElementById("searchToggle");
   var input = document.getElementById("searchInput");
+  var resultsEl = document.getElementById("searchResults");
+
+  // Catálogo propio del buscador: no depende de qué tarjetas haya en la
+  // página actual, así el resultado es el mismo estés donde estés.
+  var REPORTAJES = [
+    { title: "¿Como llegar a la fama?", videoId: "hI8e6JMbuSg", image: "https://i.imgur.com/ZKIbFsF.jpeg" },
+    { title: "¿Deporte o Sensasport?", videoId: "JzhlGWwWn6k", image: "https://i.imgur.com/p3X7n6U.jpeg" },
+    { title: "¿Politica o Reality?", videoId: "DBuCfMrWrtk", image: "https://i.imgur.com/NYeV6bW.jpeg" },
+    { title: "¿Influencers o creadores de estigmas?", videoId: "i1BO0bbKCyo", image: "https://i.imgur.com/RMKmTpX.jpeg" }
+  ];
+
+  function clearResults() {
+    if (!resultsEl) return;
+    resultsEl.innerHTML = "";
+    searchWidget.classList.remove("has-query");
+  }
+
+  function renderResults(query) {
+    if (!resultsEl) return;
+
+    if (!query) {
+      clearResults();
+      return;
+    }
+
+    searchWidget.classList.add("has-query");
+    resultsEl.innerHTML = "";
+
+    var matches = REPORTAJES.filter(function (item) {
+      return item.title.toLowerCase().indexOf(query) !== -1;
+    });
+
+    if (!matches.length) {
+      var empty = document.createElement("p");
+      empty.className = "search-results-empty";
+      empty.textContent = "No se encontraron reportajes de ";
+      var strong = document.createElement("strong");
+      strong.textContent = input.value.trim();
+      empty.appendChild(strong);
+      resultsEl.appendChild(empty);
+      return;
+    }
+
+    matches.forEach(function (item) {
+      var a = document.createElement("a");
+      a.className = "search-result-item";
+      a.href = "https://www.youtube.com/watch?v=" + item.videoId;
+      a.target = "_blank";
+      a.rel = "noopener";
+
+      var img = document.createElement("img");
+      img.className = "search-result-thumb";
+      img.src = item.image;
+      img.alt = "";
+      img.loading = "lazy";
+
+      var span = document.createElement("span");
+      span.className = "search-result-title";
+      span.textContent = item.title;
+
+      a.appendChild(img);
+      a.appendChild(span);
+      a.addEventListener("click", closeSearch);
+      resultsEl.appendChild(a);
+    });
+  }
 
   function openSearch() {
     searchWidget.classList.add("is-open");
@@ -103,6 +172,7 @@
     toggleBtn.setAttribute("aria-expanded", "false");
     toggleBtn.setAttribute("aria-label", "Buscar");
     if (input) input.blur();
+    clearResults();
   }
 
   toggleBtn.addEventListener("click", function () {
@@ -112,6 +182,12 @@
       openSearch();
     }
   });
+
+  if (input) {
+    input.addEventListener("input", function () {
+      renderResults(input.value.trim().toLowerCase());
+    });
+  }
 
   // Cierra al hacer click fuera del buscador
   document.addEventListener("click", function (e) {
@@ -134,8 +210,8 @@
    - Menú móvil
    - Reloj "EN VIVO" con la hora de Santiago de Chile (America/Santiago)
    - Tarjetas: hover (desktop) / tap (touch) / auto-preview centrado (mobile)
-   - Tabs de filtro por categoría + buscador del header (reportajes.html,
-     y solo el buscador en index.html)
+   - Tabs de filtro por categoría (reportajes.html)
+   - Buscador del header: mini-menú de resultados, no filtra la página
    ========================================================================== */
 
 (function () {
@@ -339,62 +415,30 @@
   }
 
   /* ---------------------------------------------------------------------
-     Filtro combinado: tabs de categoría (reportajes.html) + buscador del
-     header (todas las páginas con #cardRow). Viven en una sola función
-     para que ambos mecanismos convivan bien: buscar mientras hay una
-     categoría activa filtra dentro de esa categoría, y cambiar de
-     categoría no borra lo que ya estabas buscando.
+     Tabs de filtro por categoría (reportajes.html). El buscador del
+     header ya NO pasa por acá: ahora abre su propio mini-menú de
+     resultados en vez de reordenar estas tarjetas.
      --------------------------------------------------------------------- */
   var filterTabs = Array.prototype.slice.call(document.querySelectorAll(".filter-tab"));
-  var searchInput = document.getElementById("searchInput");
-  var noResultsEl = document.getElementById("no-results");
-
-  function applyFilters() {
-    var activeTab = filterTabs.filter(function (t) { return t.classList.contains("active"); })[0];
-    var category = activeTab ? activeTab.getAttribute("data-filter") : "todos";
-    var query = searchInput ? searchInput.value.trim().toLowerCase() : "";
-    var visibleCount = 0;
-
-    cards.forEach(function (card) {
-      var titleEl = card.querySelector(".card-title");
-      var title = titleEl ? titleEl.textContent.toLowerCase() : "";
-      var matchesCategory = category === "todos" || card.getAttribute("data-category") === category;
-      var matchesQuery = title.indexOf(query) !== -1;
-      var visible = matchesCategory && matchesQuery;
-
-      card.classList.toggle("filtered-out", !visible);
-      if (!visible) deactivate(card);
-      if (visible) visibleCount += 1;
-    });
-
-    if (noResultsEl) {
-      if (query && visibleCount === 0) {
-        noResultsEl.textContent = "No se encontraron reportajes de ";
-        var strong = document.createElement("strong");
-        strong.textContent = searchInput.value.trim();
-        noResultsEl.appendChild(strong);
-        noResultsEl.classList.remove("hidden");
-      } else {
-        noResultsEl.classList.add("hidden");
-      }
-    }
-  }
 
   if (filterTabs.length && cards.length) {
     filterTabs.forEach(function (tab) {
       tab.addEventListener("click", function () {
+        var filter = tab.getAttribute("data-filter");
+
         filterTabs.forEach(function (t) {
           t.classList.remove("active");
           t.setAttribute("aria-selected", "false");
         });
         tab.classList.add("active");
         tab.setAttribute("aria-selected", "true");
-        applyFilters();
+
+        cards.forEach(function (card) {
+          var matches = filter === "todos" || card.getAttribute("data-category") === filter;
+          card.classList.toggle("filtered-out", !matches);
+          if (!matches) deactivate(card);
+        });
       });
     });
-  }
-
-  if (searchInput && cards.length) {
-    searchInput.addEventListener("input", applyFilters);
   }
 })();
