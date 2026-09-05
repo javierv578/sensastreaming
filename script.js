@@ -134,7 +134,8 @@
    - Menú móvil
    - Reloj "EN VIVO" con la hora de Santiago de Chile (America/Santiago)
    - Tarjetas: hover (desktop) / tap (touch) / auto-preview centrado (mobile)
-   - Tabs de filtro por categoría (catalogo.html)
+   - Tabs de filtro por categoría + buscador del header (reportajes.html,
+     y solo el buscador en index.html)
    ========================================================================== */
 
 (function () {
@@ -338,28 +339,62 @@
   }
 
   /* ---------------------------------------------------------------------
-     Tabs de filtro por categoría (catalogo.html)
+     Filtro combinado: tabs de categoría (reportajes.html) + buscador del
+     header (todas las páginas con #cardRow). Viven en una sola función
+     para que ambos mecanismos convivan bien: buscar mientras hay una
+     categoría activa filtra dentro de esa categoría, y cambiar de
+     categoría no borra lo que ya estabas buscando.
      --------------------------------------------------------------------- */
   var filterTabs = Array.prototype.slice.call(document.querySelectorAll(".filter-tab"));
+  var searchInput = document.getElementById("searchInput");
+  var noResultsEl = document.getElementById("no-results");
+
+  function applyFilters() {
+    var activeTab = filterTabs.filter(function (t) { return t.classList.contains("active"); })[0];
+    var category = activeTab ? activeTab.getAttribute("data-filter") : "todos";
+    var query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+    var visibleCount = 0;
+
+    cards.forEach(function (card) {
+      var titleEl = card.querySelector(".card-title");
+      var title = titleEl ? titleEl.textContent.toLowerCase() : "";
+      var matchesCategory = category === "todos" || card.getAttribute("data-category") === category;
+      var matchesQuery = title.indexOf(query) !== -1;
+      var visible = matchesCategory && matchesQuery;
+
+      card.classList.toggle("filtered-out", !visible);
+      if (!visible) deactivate(card);
+      if (visible) visibleCount += 1;
+    });
+
+    if (noResultsEl) {
+      if (query && visibleCount === 0) {
+        noResultsEl.textContent = "No se encontraron reportajes de ";
+        var strong = document.createElement("strong");
+        strong.textContent = searchInput.value.trim();
+        noResultsEl.appendChild(strong);
+        noResultsEl.classList.remove("hidden");
+      } else {
+        noResultsEl.classList.add("hidden");
+      }
+    }
+  }
 
   if (filterTabs.length && cards.length) {
     filterTabs.forEach(function (tab) {
       tab.addEventListener("click", function () {
-        var filter = tab.getAttribute("data-filter");
-
         filterTabs.forEach(function (t) {
           t.classList.remove("active");
           t.setAttribute("aria-selected", "false");
         });
         tab.classList.add("active");
         tab.setAttribute("aria-selected", "true");
-
-        cards.forEach(function (card) {
-          var matches = filter === "todos" || card.getAttribute("data-category") === filter;
-          card.classList.toggle("filtered-out", !matches);
-          if (!matches) deactivate(card);
-        });
+        applyFilters();
       });
     });
+  }
+
+  if (searchInput && cards.length) {
+    searchInput.addEventListener("input", applyFilters);
   }
 })();
