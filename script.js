@@ -201,6 +201,45 @@
 })();
 
 /* ==========================================================================
+   SENSASTREAMING — mini-menú de categorías (header)
+   Mismo patrón que el buscador: abre/cierra un dropdown flotante. Cada
+   opción es un link normal a reportajes.html?categoria=X, así funciona
+   incluso sin JS. Reportajes.html además lee ese parámetro al cargar
+   para dejar el tab correspondiente ya activo (ver bloque de abajo).
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var widget = document.getElementById("categoriesWidget");
+  if (!widget) return; // esta página no tiene el ícono de categorías
+
+  var toggleBtn = document.getElementById("categoriesToggle");
+
+  function openMenu() {
+    widget.classList.add("is-open");
+    toggleBtn.setAttribute("aria-expanded", "true");
+  }
+
+  function closeMenu() {
+    widget.classList.remove("is-open");
+    toggleBtn.setAttribute("aria-expanded", "false");
+  }
+
+  toggleBtn.addEventListener("click", function () {
+    if (widget.classList.contains("is-open")) closeMenu();
+    else openMenu();
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!widget.contains(e.target)) closeMenu();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeMenu();
+  });
+})();
+
+/* ==========================================================================
    SENSASTREAMING — interactions
    Compartido por index.html, catalogo.html y acerca-de.html.
    Cada bloque revisa si sus elementos existen antes de engancharse, así el
@@ -210,7 +249,8 @@
    - Menú móvil
    - Reloj "EN VIVO" con la hora de Santiago de Chile (America/Santiago)
    - Tarjetas: hover (desktop) / tap (touch) / auto-preview centrado (mobile)
-   - Tabs de filtro por categoría (reportajes.html)
+   - Tabs de filtro por categoría (reportajes.html), incluida la que llega
+     por ?categoria= desde el mini-menú del header
    - Buscador del header: mini-menú de resultados, no filtra la página
    ========================================================================== */
 
@@ -440,5 +480,15 @@
         });
       });
     });
+
+    // Si se llegó desde el mini-menú "Categorías" del header
+    // (reportajes.html?categoria=judicial), deja ese tab ya activo.
+    var requestedCategory = new URLSearchParams(window.location.search).get("categoria");
+    if (requestedCategory) {
+      var matchingTab = filterTabs.filter(function (t) {
+        return t.getAttribute("data-filter") === requestedCategory;
+      })[0];
+      if (matchingTab) matchingTab.click();
+    }
   }
 })();

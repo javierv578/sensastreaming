@@ -399,6 +399,40 @@ button:focus-visible,
   font-weight: 700;
 }
 
+/* ---- Mini-menú de categorías (mismo lenguaje visual que el buscador) ---- */
+
+.categories-widget { position: relative; }
+
+.categories-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 180px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: .4rem;
+  z-index: 150;
+}
+
+.categories-widget.is-open .categories-menu { display: block; }
+
+.categories-menu-item {
+  display: block;
+  padding: .55rem .7rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: .9rem;
+  transition: background-color .15s ease;
+}
+
+.categories-menu-item:hover,
+.categories-menu-item:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .nav-toggle {
   display: none;
   margin-left: auto;

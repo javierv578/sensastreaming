@@ -73,19 +73,27 @@
     </div>
 
     <div class="header-icons">
-      <button type="button" class="icon-btn" aria-label="Categorías" title="Categorías">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-          <circle cx="5" cy="5" r="2"></circle>
-          <circle cx="12" cy="5" r="2"></circle>
-          <circle cx="19" cy="5" r="2"></circle>
-          <circle cx="5" cy="12" r="2"></circle>
-          <circle cx="12" cy="12" r="2"></circle>
-          <circle cx="19" cy="12" r="2"></circle>
-          <circle cx="5" cy="19" r="2"></circle>
-          <circle cx="12" cy="19" r="2"></circle>
-          <circle cx="19" cy="19" r="2"></circle>
-        </svg>
-      </button>
+      <div class="categories-widget" id="categoriesWidget">
+        <button type="button" class="icon-btn" id="categoriesToggle" aria-label="Categorías" aria-expanded="false" aria-controls="categoriesMenu" title="Categorías">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+            <circle cx="5" cy="5" r="2"></circle>
+            <circle cx="12" cy="5" r="2"></circle>
+            <circle cx="19" cy="5" r="2"></circle>
+            <circle cx="5" cy="12" r="2"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+            <circle cx="19" cy="12" r="2"></circle>
+            <circle cx="5" cy="19" r="2"></circle>
+            <circle cx="12" cy="19" r="2"></circle>
+            <circle cx="19" cy="19" r="2"></circle>
+          </svg>
+        </button>
+        <div class="categories-menu" id="categoriesMenu" role="menu" aria-label="Categorías">
+          <a href="reportajes.html" class="categories-menu-item" role="menuitem">Todos</a>
+          <a href="reportajes.html?categoria=testimonio" class="categories-menu-item" role="menuitem">Testimonios</a>
+          <a href="reportajes.html?categoria=judicial" class="categories-menu-item" role="menuitem">Judicial</a>
+          <a href="reportajes.html?categoria=entrevista" class="categories-menu-item" role="menuitem">Entrevistas</a>
+        </div>
+      </div>
     </div>
 
     <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="siteNav">
