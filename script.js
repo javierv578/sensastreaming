@@ -1,6 +1,6 @@
 /* ==========================================================================
    SENSASTREAMING — pantalla de carga (splash screen)
-   Bloque independiente: si la página no tiene #splashScreen (catalogo.html,
+   Bloque independiente: si la página no tiene #splashScreen (reportajes.html,
    acerca-de.html) no hace nada. Dura 5 segundos exactos y luego se
    desvanece. La barra de progreso y la posición del stickman se calculan
    en el mismo requestAnimationFrame para que avancen siempre al mismo
@@ -95,10 +95,10 @@
   // Catálogo propio del buscador: no depende de qué tarjetas haya en la
   // página actual, así el resultado es el mismo estés donde estés.
   var REPORTAJES = [
-    { title: "¿Como llegar a la fama?", videoId: "hI8e6JMbuSg", image: "https://i.imgur.com/ZKIbFsF.jpeg" },
-    { title: "¿Deporte o Sensasport?", videoId: "JzhlGWwWn6k", image: "https://i.imgur.com/p3X7n6U.jpeg" },
-    { title: "¿Politica o Reality?", videoId: "DBuCfMrWrtk", image: "https://i.imgur.com/NYeV6bW.jpeg" },
-    { title: "¿Influencers o creadores de estigmas?", videoId: "i1BO0bbKCyo", image: "https://i.imgur.com/RMKmTpX.jpeg" }
+    { title: "¿Como llegar a la fama?", videoId: "hI8e6JMbuSg", image: "https://i.imgur.com/ZKIbFsF.jpeg", detailUrl: "detalle-fama.html" },
+    { title: "¿Deporte o Sensasport?", videoId: "JzhlGWwWn6k", image: "https://i.imgur.com/p3X7n6U.jpeg", detailUrl: "detalle-deporte.html" },
+    { title: "¿Politica o Reality?", videoId: "DBuCfMrWrtk", image: "https://i.imgur.com/NYeV6bW.jpeg", detailUrl: "detalle-politica.html" },
+    { title: "¿Influencers o creadores de estigmas?", videoId: "i1BO0bbKCyo", image: "https://i.imgur.com/RMKmTpX.jpeg", detailUrl: "detalle-influencers.html" }
   ];
 
   function clearResults() {
@@ -136,9 +136,7 @@
     matches.forEach(function (item) {
       var a = document.createElement("a");
       a.className = "search-result-item";
-      a.href = "https://www.youtube.com/watch?v=" + item.videoId;
-      a.target = "_blank";
-      a.rel = "noopener";
+      a.href = item.detailUrl;
 
       var img = document.createElement("img");
       img.className = "search-result-thumb";
@@ -241,7 +239,7 @@
 
 /* ==========================================================================
    SENSASTREAMING — interactions
-   Compartido por index.html, catalogo.html y acerca-de.html.
+   Compartido por index.html, reportajes.html, acerca-de.html y podcast.html.
    Cada bloque revisa si sus elementos existen antes de engancharse, así el
    mismo archivo sirve para páginas que no tienen catálogo, tabs o reloj.
 
@@ -390,8 +388,8 @@
   }
 
   function openCard(card) {
-    var id = card.getAttribute("data-yt");
-    window.open("https://www.youtube.com/watch?v=" + id, "_blank", "noopener");
+    var detailUrl = card.getAttribute("data-detail");
+    if (detailUrl) window.location.href = detailUrl;
   }
 
   cards.forEach(function (card) {
