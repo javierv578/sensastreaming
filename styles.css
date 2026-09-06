@@ -1,6 +1,6 @@
 /* ==========================================================================
    SENSASTREAMING — stylesheet
-   Sitio multi-página: index.html / catalogo.html / acerca-de.html
+   Sitio multi-página: index.html / reportajes.html / acerca-de.html / podcast.html
 
    Token system
    ------------
@@ -779,7 +779,7 @@ html.splash-lock body {
 }
 
 /* ==========================================================================
-   Page banner — cabecera para catalogo.html y acerca-de.html
+   Page banner — cabecera para reportajes.html y acerca-de.html
    ========================================================================== */
 
 .page-banner {
@@ -812,7 +812,7 @@ html.splash-lock body {
 }
 
 /* ==========================================================================
-   Catálogo / fila / tarjetas — se usa en index.html (destacados) y catalogo.html
+   Catálogo / fila / tarjetas — se usa en index.html (destacados) y reportajes.html
    ========================================================================== */
 
 .catalog {
@@ -848,7 +848,7 @@ html.splash-lock body {
   margin: 0;
 }
 
-/* ---- Tabs de filtro (catalogo.html) ---- */
+/* ---- Tabs de filtro (reportajes.html) ---- */
 
 .filter-tabs {
   display: flex;
@@ -1044,6 +1044,8 @@ html.splash-lock body {
   .stickman-leg { animation: none; }
   .splash-screen { transition: none; }
   .team-avatar img { animation: none; }
+  .detail-icon-btn,
+  .detail-tab { transition: none; }
 }
 
 /* ==========================================================================
@@ -1289,4 +1291,216 @@ html.splash-lock body {
 
   .hero-actions { flex-direction: column; align-items: stretch; }
   .btn { justify-content: center; }
+}
+
+/* ==========================================================================
+   Detalle de reportaje (detalle-reportaje.html) — vista previa estilo
+   Prime Video antes de reproducir el video nativo de YouTube.
+   ========================================================================== */
+
+/* ---- Hero inmersivo ---- */
+
+.detail-hero {
+  position: relative;
+  min-height: 78vh;
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.detail-hero::before,
+.detail-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+/* Scrim denso a la izquierda, para que el título sea legible sobre cualquier foto */
+.detail-hero::before {
+  background: linear-gradient(90deg,
+    var(--bg-void) 0%,
+    rgba(19, 6, 34, .88) 32%,
+    rgba(19, 6, 34, .45) 58%,
+    transparent 82%);
+}
+
+/* Scrim denso abajo, para que se funda con la sección siguiente */
+.detail-hero::after {
+  background: linear-gradient(to top,
+    var(--bg-void) 0%,
+    rgba(19, 6, 34, .72) 30%,
+    transparent 62%);
+}
+
+.detail-hero-inner {
+  position: relative;
+  max-width: 640px;
+  padding: 0 4vw;
+  padding-top: calc(var(--content-top) + 3rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.detail-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: .01em;
+  line-height: 1.05;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.detail-actions {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  flex-wrap: wrap;
+}
+
+.btn-play {
+  padding: .95rem 2rem;
+  font-size: 1.05rem;
+}
+
+.detail-icon-row {
+  display: flex;
+  gap: .6rem;
+}
+
+.detail-icon-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color .2s ease, border-color .2s ease;
+}
+
+.detail-icon-btn:hover,
+.detail-icon-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.detail-icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---- Bloque de información: sinopsis + metadatos + ficha técnica ---- */
+
+.detail-info {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 3rem 4vw 3.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  background: var(--bg-void);
+}
+
+@media (min-width: 900px) {
+  .detail-info {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.detail-meta {
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  letter-spacing: .03em;
+  color: var(--text-muted);
+  margin: 0 0 1rem;
+}
+
+.detail-synopsis {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 62ch;
+  margin: 0;
+}
+
+.detail-credits-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.25rem;
+  margin: 0 0 1rem;
+  color: var(--text-primary);
+}
+
+.detail-credits-list {
+  margin: 0;
+}
+
+.detail-credit-row {
+  padding: .75rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.detail-credit-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.detail-credit-row dt {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 .3rem;
+}
+
+.detail-credit-row dd {
+  margin: 0;
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ---- Navegación inferior: tabs (visuales, sin lógica de cambio real) ---- */
+
+.detail-tabs {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 4vw;
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-void);
+}
+
+.detail-tab {
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 1rem 0;
+  font-family: var(--font-body);
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color .2s ease, border-color .2s ease;
+}
+
+.detail-tab:hover {
+  color: var(--text-secondary);
+}
+
+.detail-tab.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent-amber);
 }
