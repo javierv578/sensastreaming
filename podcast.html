@@ -125,7 +125,17 @@
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <img src="https://i.imgur.com/6NUFAMf.png" alt="Sensastreaming" class="footer-logo">
+    <div class="footer-brand">
+      <img src="https://i.imgur.com/6NUFAMf.png" alt="Sensastreaming" class="footer-logo">
+      <button type="button" class="footer-easter-egg" id="easterEggTrigger" aria-label="Minijuego secreto" title="¿Aburrido? Jugá un rato">
+        <span class="mini-stickman" aria-hidden="true">
+          <span class="mini-stickman-head"></span>
+          <span class="mini-stickman-body"></span>
+          <span class="mini-stickman-leg left"></span>
+          <span class="mini-stickman-leg right"></span>
+        </span>
+      </button>
+    </div>
     <nav class="footer-nav" aria-label="Enlaces del pie de página">
       <a href="index.html">Inicio</a>
       <a href="reportajes.html">Reportajes</a>
@@ -135,6 +145,30 @@
     <p>© 2026 Sensastreaming — Plataforma demostrativa. Los videos enlazados pertenecen a sus respectivos autores en YouTube.</p>
   </div>
 </footer>
+
+<div class="game-overlay" id="gameOverlay">
+  <div class="game-panel">
+    <button type="button" class="game-close" id="gameClose" aria-label="Cerrar juego">✕</button>
+
+    <div class="game-stage" id="gameStage">
+      <div class="game-score" id="gameScore">00000</div>
+
+      <div class="game-player" id="gamePlayer">
+        <div class="stickman-head"></div>
+        <div class="stickman-body"></div>
+        <div class="stickman-leg left"></div>
+        <div class="stickman-leg right"></div>
+      </div>
+
+      <div class="game-ground"></div>
+
+      <div class="game-message visible" id="gameMessage">
+        <p class="game-message-title">Presioná <kbd>Espacio</kbd> para empezar</p>
+        <p class="game-message-hint">Espacio o ↑ para saltar · ↓ para agacharte</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>

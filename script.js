@@ -490,3 +490,259 @@
     }
   }
 })();
+
+/* ==========================================================================
+   SENSASTREAMING — easter egg: minijuego "esquiva el televisor"
+   Estilo Dino de Chrome. El jugador es el mismo stickman del splash screen
+   (misma cabeza carmesí, mismo cuerpo/piernas, misma animación de piernas).
+   Bloque independiente y guardado: si la página no tiene el trigger del
+   footer o el overlay del juego, no hace nada.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var trigger = document.getElementById("easterEggTrigger");
+  var overlay = document.getElementById("gameOverlay");
+  if (!trigger || !overlay) return; // esta página no tiene el juego
+
+  var closeBtn = document.getElementById("gameClose");
+  var stage = document.getElementById("gameStage");
+  var player = document.getElementById("gamePlayer");
+  var scoreEl = document.getElementById("gameScore");
+  var messageEl = document.getElementById("gameMessage");
+
+  // ---- Físicas y constantes (fáciles de ajustar) ----
+  var GRAVITY = 0.55;
+  var JUMP_VELOCITY = -9.5;
+  var PLAYER_HEIGHT = 28;
+  var DUCK_HEIGHT = 16;
+  var OBSTACLE_WIDTH = 34;
+  var OBSTACLE_HEIGHT = 30;
+  var FLYING_OBSTACLE_Y = 20;   // altura del piso a la que flota
+  var FLYING_OBSTACLE_HEIGHT = 18;
+  var FLYING_CHANCE = 0.3;      // 30% de los obstáculos flotan (se esquivan agachado)
+  var BASE_SPEED = 4.2;         // px por frame (a 60fps)
+  var MAX_SPEED = 10;
+  var SPEED_RAMP = 0.0015;      // cuánto sube la velocidad por frame
+
+  var isOpen = false;
+  var isRunning = false;
+  var isGameOver = false;
+
+  var playerX = 30;   // se recalcula con la posición real en el DOM
+  var playerY = 0;     // altura sobre el piso (0 = apoyado)
+  var velocityY = 0;
+  var isDucking = false;
+
+  var obstacles = [];  // { el, x, y, height }
+  var nextObstacleIn = 0;
+  var speed = BASE_SPEED;
+  var score = 0;
+  var rafId = null;
+  var lastTime = null;
+
+  function formatScore(n) {
+    var s = String(Math.floor(n));
+    while (s.length < 5) s = "0" + s;
+    return s;
+  }
+
+  function randomGap() {
+    // distancia en px hasta el próximo obstáculo
+    return 260 + Math.random() * 340;
+  }
+
+  function boxesOverlap(a, b) {
+    return (
+      a.x < b.x + b.width &&
+      a.x + a.width > b.x &&
+      a.y < b.y + b.height &&
+      a.y + a.height > b.y
+    );
+  }
+
+  function getPlayerBox() {
+    var height = isDucking ? DUCK_HEIGHT : PLAYER_HEIGHT;
+    return { x: playerX, y: playerY, width: 22, height: height };
+  }
+
+  function setDucking(value) {
+    if (isDucking === value) return;
+    isDucking = value;
+    player.classList.toggle("ducking", value);
+  }
+
+  function jump() {
+    if (playerY === 0) velocityY = JUMP_VELOCITY;
+  }
+
+  function clearObstacles() {
+    obstacles.forEach(function (o) { o.el.remove(); });
+    obstacles = [];
+  }
+
+  function spawnObstacle() {
+    var isFlying = Math.random() < FLYING_CHANCE;
+    var el = document.createElement("div");
+    el.className = "game-obstacle" + (isFlying ? " flying" : "");
+    el.innerHTML =
+      '<div class="tv-antenna left"></div>' +
+      '<div class="tv-antenna right"></div>' +
+      '<div class="tv-body"><div class="tv-screen"></div></div>' +
+      '<div class="tv-legs"></div>';
+    stage.appendChild(el);
+    obstacles.push({
+      el: el,
+      x: stage.clientWidth + OBSTACLE_WIDTH,
+      y: isFlying ? FLYING_OBSTACLE_Y : 0,
+      height: isFlying ? FLYING_OBSTACLE_HEIGHT : OBSTACLE_HEIGHT
+    });
+  }
+
+  function resetGame() {
+    clearObstacles();
+    playerX = player.offsetLeft;
+    playerY = 0;
+    velocityY = 0;
+    setDucking(false);
+    player.style.transform = "translateY(0px)";
+    speed = BASE_SPEED;
+    score = 0;
+    nextObstacleIn = randomGap();
+    scoreEl.textContent = formatScore(score);
+    isGameOver = false;
+  }
+
+  function startGame() {
+    resetGame();
+    isRunning = true;
+    messageEl.classList.remove("visible");
+    lastTime = null;
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function endGame() {
+    isRunning = false;
+    isGameOver = true;
+    if (rafId) cancelAnimationFrame(rafId);
+
+    messageEl.innerHTML = "";
+    var title = document.createElement("p");
+    title.className = "game-message-title";
+    title.textContent = "Game over — puntaje " + formatScore(score);
+
+    var retryBtn = document.createElement("button");
+    retryBtn.type = "button";
+    retryBtn.className = "btn btn-primary game-retry";
+    retryBtn.textContent = "Volver a jugar";
+    retryBtn.addEventListener("click", startGame);
+
+    messageEl.appendChild(title);
+    messageEl.appendChild(retryBtn);
+    messageEl.classList.add("visible");
+  }
+
+  function loop(time) {
+    if (!isRunning) return;
+    if (lastTime === null) lastTime = time;
+    // normaliza a "frames de 60fps" para que la física no dependa del
+    // refresco real de la pantalla; tope de 3 por si la pestaña estuvo
+    // en segundo plano y el salto de tiempo es enorme.
+    var dt = Math.min((time - lastTime) / 16.6667, 3);
+    lastTime = time;
+
+    velocityY += GRAVITY * dt;
+    playerY -= velocityY * dt;
+    if (playerY < 0) { playerY = 0; velocityY = 0; }
+    player.style.transform = "translateY(" + (-playerY) + "px)";
+
+    speed = Math.min(MAX_SPEED, speed + SPEED_RAMP * dt);
+    score += dt * 0.5;
+    scoreEl.textContent = formatScore(score);
+
+    nextObstacleIn -= speed * dt;
+    if (nextObstacleIn <= 0) {
+      spawnObstacle();
+      nextObstacleIn = randomGap();
+    }
+
+    var playerBox = getPlayerBox();
+
+    for (var i = obstacles.length - 1; i >= 0; i--) {
+      var o = obstacles[i];
+      o.x -= speed * dt;
+      o.el.style.left = o.x + "px";
+
+      if (o.x + OBSTACLE_WIDTH < 0) {
+        o.el.remove();
+        obstacles.splice(i, 1);
+        continue;
+      }
+
+      var obstacleBox = { x: o.x, y: o.y, width: OBSTACLE_WIDTH, height: o.height };
+      if (boxesOverlap(playerBox, obstacleBox)) {
+        endGame();
+        return;
+      }
+    }
+
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function openGame() {
+    isOpen = true;
+    overlay.classList.add("is-open");
+    document.documentElement.classList.add("splash-lock"); // reutiliza el bloqueo de scroll
+    resetGame();
+    messageEl.innerHTML =
+      '<p class="game-message-title">Presioná <kbd>Espacio</kbd> para empezar</p>' +
+      '<p class="game-message-hint">Espacio o ↑ para saltar · ↓ para agacharte</p>';
+    messageEl.classList.add("visible");
+    closeBtn.focus();
+  }
+
+  function closeGame() {
+    isOpen = false;
+    isRunning = false;
+    if (rafId) cancelAnimationFrame(rafId);
+    overlay.classList.remove("is-open");
+    document.documentElement.classList.remove("splash-lock");
+    clearObstacles();
+  }
+
+  trigger.addEventListener("click", openGame);
+  closeBtn.addEventListener("click", closeGame);
+
+  // Cierra al hacer click en el fondo oscuro (no en el panel)
+  overlay.addEventListener("click", function (e) {
+    if (e.target === overlay) closeGame();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (!isOpen) return; // fuera del juego, el teclado se comporta normal
+
+    if (e.key === "Escape") {
+      closeGame();
+      return;
+    }
+
+    if (e.code === "Space" || e.code === "ArrowUp") {
+      e.preventDefault(); // evita que la página haga scroll mientras se juega
+      if (!isRunning) startGame();
+      else jump();
+    }
+
+    if (e.code === "ArrowDown") {
+      e.preventDefault();
+      if (isRunning) setDucking(true);
+    }
+  });
+
+  document.addEventListener("keyup", function (e) {
+    if (!isOpen) return;
+    if (e.code === "ArrowDown") {
+      e.preventDefault();
+      setDucking(false);
+    }
+  });
+})();

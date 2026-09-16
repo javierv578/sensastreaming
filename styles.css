@@ -1046,6 +1046,9 @@ html.splash-lock body {
   .team-avatar img { animation: none; }
   .detail-icon-btn,
   .detail-tab { transition: none; }
+  .footer-easter-egg:hover .mini-stickman-leg { animation: none; }
+  .game-obstacle.flying { animation: none; }
+  .game-player { transition: none; }
 }
 
 /* ==========================================================================
@@ -1231,6 +1234,79 @@ html.splash-lock body {
 }
 
 .footer-logo { height: 20px; width: auto; opacity: .8; }
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+
+.footer-easter-egg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  opacity: .5;
+  transition: opacity .2s ease;
+}
+
+.footer-easter-egg:hover,
+.footer-easter-egg:focus-visible {
+  opacity: 1;
+}
+
+.mini-stickman {
+  position: relative;
+  display: block;
+  width: 14px;
+  height: 20px;
+}
+
+.mini-stickman-head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: var(--accent-crimson);
+}
+
+.mini-stickman-body {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 2px;
+  height: 8px;
+  margin-left: -1px;
+  background: var(--text-primary);
+}
+
+.mini-stickman-leg {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 2px;
+  height: 7px;
+  margin-left: -1px;
+  background: var(--text-primary);
+  transform-origin: top center;
+}
+
+.mini-stickman-leg.left { transform: rotate(-18deg); }
+.mini-stickman-leg.right { transform: rotate(18deg); }
+
+.footer-easter-egg:hover .mini-stickman-leg {
+  animation: legSwing .4s ease-in-out infinite;
+}
+.footer-easter-egg:hover .mini-stickman-leg.right { animation-delay: -.2s; }
 
 .footer-nav {
   display: flex;
@@ -1503,4 +1579,204 @@ html.splash-lock body {
 .detail-tab.active {
   color: var(--text-primary);
   border-bottom-color: var(--accent-amber);
+}
+
+/* ==========================================================================
+   Easter egg: minijuego "esquiva el televisor" (estilo Dino de Chrome)
+   ========================================================================== */
+
+.game-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 3, 15, .85);
+  padding: 4vw;
+}
+
+.game-overlay.is-open { display: flex; }
+
+.game-panel {
+  position: relative;
+  width: min(700px, 100%);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 1rem;
+}
+
+.game-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .2s ease;
+}
+
+.game-close:hover,
+.game-close:focus-visible {
+  background: var(--accent-crimson);
+}
+
+.game-stage {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--bg-void);
+}
+
+.game-score {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 3;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  letter-spacing: .05em;
+  color: var(--text-primary);
+}
+
+.game-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--border-strong);
+}
+
+/* ---- El jugador: el mismo stickman del splash screen ---- */
+
+.game-player {
+  position: absolute;
+  left: 30px;
+  bottom: 0;
+  width: 22px;
+  height: 28px;
+  transition: height .12s ease;
+}
+
+.game-player.ducking {
+  height: 16px;
+}
+
+/* ---- Obstáculos: televisores retro ---- */
+
+.game-obstacle {
+  position: absolute;
+  bottom: 0;
+  width: 34px;
+  height: 30px;
+}
+
+.game-obstacle .tv-body {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  width: 34px;
+  height: 24px;
+  background: var(--bg-surface-2);
+  border: 2px solid var(--text-primary);
+  border-radius: 3px;
+}
+
+.game-obstacle .tv-screen {
+  position: absolute;
+  inset: 4px;
+  background: var(--accent-amber);
+  opacity: .5;
+  border-radius: 1px;
+}
+
+.game-obstacle .tv-antenna {
+  position: absolute;
+  top: -8px;
+  width: 2px;
+  height: 10px;
+  background: var(--text-primary);
+  transform-origin: bottom center;
+}
+.game-obstacle .tv-antenna.left { left: 6px; transform: rotate(-25deg); }
+.game-obstacle .tv-antenna.right { right: 6px; transform: rotate(25deg); }
+
+.game-obstacle .tv-legs {
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  width: 18px;
+  height: 4px;
+  border-left: 2px solid var(--text-primary);
+  border-right: 2px solid var(--text-primary);
+}
+
+/* Variante que flota más arriba: se esquiva agachándose, no saltando */
+.game-obstacle.flying {
+  bottom: 20px;
+  height: 18px;
+  animation: teamFloat 1s ease-in-out infinite;
+}
+.game-obstacle.flying .tv-legs { display: none; }
+.game-obstacle.flying .tv-body { height: 18px; }
+
+/* ---- Mensaje: "presioná espacio" / Game over ---- */
+
+.game-message {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  text-align: center;
+  padding: 1rem;
+  background: rgba(19, 6, 34, .45);
+  color: var(--text-primary);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.game-message.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.game-message-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.game-message-hint {
+  margin: 0;
+  font-size: .82rem;
+  color: var(--text-secondary);
+}
+
+.game-message kbd {
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: .05rem .4rem;
 }
