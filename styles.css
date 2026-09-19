@@ -1780,3 +1780,167 @@ html.splash-lock body {
   border-radius: 4px;
   padding: .05rem .4rem;
 }
+.hidden { display: none; }
+
+/* ---- Pantalla de Game Over: ranking Top 5 estilo arcade retro ---- */
+
+.game-over {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  background: rgba(8, 3, 15, .94);
+  border-radius: var(--radius-sm);
+  padding: 1.5rem 1rem;
+}
+
+.game-over.visible { display: flex; }
+
+.game-over-inner {
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.game-over-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: .01em;
+  line-height: 1.15;
+  font-size: clamp(1.35rem, 4.5vw, 1.9rem);
+  color: var(--accent-crimson);
+  margin: 0 0 .6rem;
+}
+
+.game-over-score {
+  font-family: var(--font-mono);
+  font-size: .95rem;
+  color: var(--text-secondary);
+  margin: 0 0 1rem;
+}
+
+.game-over-status {
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--text-muted);
+  min-height: 1.2em;
+  margin: 0 0 1rem;
+}
+
+/* ---- Input de iniciales, estilo pantalla CRT ámbar ---- */
+
+.game-initials-form { margin: 0 0 1.5rem; }
+
+.game-initials-label {
+  font-size: .85rem;
+  color: var(--text-secondary);
+  margin: 0 0 .7rem;
+}
+
+.game-initials-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  flex-wrap: wrap;
+}
+
+.game-initials-input {
+  width: 4.5rem;
+  padding: .5rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--accent-amber);
+  background: var(--bg-void);
+  border: 2px solid var(--accent-amber);
+  border-radius: var(--radius-sm);
+}
+
+.game-initials-input:focus {
+  outline: none;
+  border-color: var(--accent-crimson);
+}
+
+/* ---- Tabla Top 5 ---- */
+
+.game-scoreboard { margin: 0 0 1.5rem; }
+
+.game-scoreboard-title {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 .6rem;
+}
+
+.game-scoreboard-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.game-scoreboard-row {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .4rem .25rem;
+  border-bottom: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: .92rem;
+}
+
+.game-scoreboard-rank {
+  width: 1.3rem;
+  color: var(--text-muted);
+}
+
+.game-scoreboard-name {
+  flex: 1;
+  text-align: left;
+  font-weight: 700;
+}
+
+.game-scoreboard-score {
+  color: var(--text-secondary);
+}
+
+.game-scoreboard-row.is-first .game-scoreboard-rank,
+.game-scoreboard-row.is-first .game-scoreboard-name,
+.game-scoreboard-row.is-first .game-scoreboard-score {
+  color: var(--accent-crimson);
+}
+
+/* ---- Acciones finales ---- */
+
+.game-over-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.game-over-close-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--text-muted);
+  font-size: .9rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.game-over-close-link:hover,
+.game-over-close-link:focus-visible {
+  color: var(--text-primary);
+}

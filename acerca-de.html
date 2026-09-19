@@ -184,7 +184,7 @@
 </footer>
 
 <div class="game-overlay" id="gameOverlay">
-  <div class="game-panel">
+  <div class="game-panel" role="dialog" aria-modal="true" aria-label="Minijuego: esquiva los televisores">
     <button type="button" class="game-close" id="gameClose" aria-label="Cerrar juego">✕</button>
 
     <div class="game-stage" id="gameStage">
@@ -202,6 +202,32 @@
       <div class="game-message visible" id="gameMessage">
         <p class="game-message-title">Presioná <kbd>Espacio</kbd> para empezar</p>
         <p class="game-message-hint">Espacio o ↑ para saltar · ↓ para agacharte</p>
+      </div>
+    </div>
+
+    <div class="game-over" id="gameOver">
+      <div class="game-over-inner">
+        <h2 class="game-over-title">Has sido absorbido por los medios</h2>
+        <p class="game-over-score">Puntaje: <span id="gameOverScore">00000</span></p>
+        <p class="game-over-status" id="gameOverStatus" aria-live="polite">Conectando con el ranking global…</p>
+
+        <form class="game-initials-form hidden" id="gameInitialsForm" autocomplete="off">
+          <p class="game-initials-label">¡Entraste al Top 5! Ingresá tus iniciales</p>
+          <div class="game-initials-row">
+            <input type="text" id="gameInitialsInput" class="game-initials-input" maxlength="3" autocapitalize="characters" aria-label="Tus iniciales, hasta 3 letras" placeholder="AAA">
+            <button type="submit" class="btn btn-primary game-initials-submit">Guardar</button>
+          </div>
+        </form>
+
+        <div class="game-scoreboard hidden" id="gameScoreboard">
+          <p class="game-scoreboard-title">Top 5 — Sensastreaming Arcade</p>
+          <ol class="game-scoreboard-list" id="gameScoreboardList"></ol>
+        </div>
+
+        <div class="game-over-actions">
+          <button type="button" class="btn btn-primary" id="gameOverRetry">Jugar de nuevo</button>
+          <button type="button" class="game-over-close-link" id="gameOverClose">Cerrar</button>
+        </div>
       </div>
     </div>
   </div>

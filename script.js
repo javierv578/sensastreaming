@@ -511,6 +511,32 @@
   var scoreEl = document.getElementById("gameScore");
   var messageEl = document.getElementById("gameMessage");
 
+  var gameOverEl = document.getElementById("gameOver");
+  var gameOverScoreEl = document.getElementById("gameOverScore");
+  var gameOverStatusEl = document.getElementById("gameOverStatus");
+  var initialsForm = document.getElementById("gameInitialsForm");
+  var initialsInput = document.getElementById("gameInitialsInput");
+  var scoreboardEl = document.getElementById("gameScoreboard");
+  var scoreboardListEl = document.getElementById("gameScoreboardList");
+  var gameOverRetryBtn = document.getElementById("gameOverRetry");
+  var gameOverCloseBtn = document.getElementById("gameOverClose");
+
+  // ---- Ranking en la nube ----
+  // TODO: reemplazar por tu endpoint real (JSONBin, Firebase Realtime DB, etc).
+  // - JSONBin v3: GET usa ".../b/<ID>/latest" y PUT usa ".../b/<ID>" (sin "/latest").
+  //   Si usás JSONBin, dejá ENDPOINT_URL apuntando al GET y ajustá la URL del
+  //   PUT en saveHighScore() quitándole el "/latest".
+  // - Firebase Realtime DB: la MISMA url "https://tu-proyecto.firebaseio.com/scores.json"
+  //   sirve para GET y PUT tal cual está armado abajo.
+  var ENDPOINT_URL = "https://api.jsonbin.io/v3/b/REEMPLAZA_CON_TU_BIN_ID/latest";
+  // Si tu servicio pide una API key para escribir (JSONBin la pide), ponela acá.
+  // Se manda como header "X-Master-Key" solo si no está vacía.
+  var API_KEY = "";
+
+  var LOCAL_STORAGE_KEY = "sensastreaming-highscores";
+  var MAX_SCORES = 5;
+  var MAX_INITIALS_LENGTH = 3;
+
   // ---- Físicas y constantes (fáciles de ajustar) ----
   var GRAVITY = 0.55;
   var JUMP_VELOCITY = -9.5;
@@ -538,6 +564,7 @@
   var nextObstacleIn = 0;
   var speed = BASE_SPEED;
   var score = 0;
+  var currentFinalScore = 0; // puntaje capturado en el momento exacto de morir
   var rafId = null;
   var lastTime = null;
 
@@ -611,6 +638,7 @@
     nextObstacleIn = randomGap();
     scoreEl.textContent = formatScore(score);
     isGameOver = false;
+    gameOverEl.classList.remove("visible");
   }
 
   function startGame() {
@@ -621,25 +649,150 @@
     rafId = requestAnimationFrame(loop);
   }
 
+  // ---- Ranking en la nube, con respaldo en localStorage ----
+
+  function buildHeaders() {
+    var headers = { "Content-Type": "application/json" };
+    if (API_KEY) headers["X-Master-Key"] = API_KEY;
+    return headers;
+  }
+
+  function extractScores(data) {
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.scores)) return data.scores;
+    if (data && data.record && Array.isArray(data.record.scores)) return data.record.scores;
+    return [];
+  }
+
+  function sanitizeScores(list) {
+    return list
+      .filter(function (item) {
+        return item && typeof item.name === "string" && typeof item.score === "number";
+      })
+      .sort(function (a, b) { return b.score - a.score; })
+      .slice(0, MAX_SCORES);
+  }
+
+  function readLocalScores() {
+    try {
+      var raw = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (err) {
+      return []; // localStorage puede no estar disponible (modo privado, etc.)
+    }
+  }
+
+  function writeLocalScores(list) {
+    try {
+      window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(list));
+    } catch (err) {
+      // no es crítico si falla — el juego sigue funcionando igual
+    }
+  }
+
+  // Devuelve una promesa que SIEMPRE resuelve (nunca rechaza): si el fetch
+  // falla, cae de vuelta a localStorage para que el juego no se rompa.
+  function getTopScores() {
+    return fetch(ENDPOINT_URL, { method: "GET", headers: buildHeaders() })
+      .then(function (res) {
+        if (!res.ok) throw new Error("Respuesta no OK: " + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        return sanitizeScores(extractScores(data));
+      })
+      .catch(function (err) {
+        console.warn("Sensastreaming: no se pudo leer el ranking en la nube, usando localStorage.", err);
+        return sanitizeScores(readLocalScores());
+      });
+  }
+
+  // Vuelve a pedir el ranking más fresco antes de agregar el nuevo puntaje
+  // (evita pisar puntajes que otra persona haya guardado mientras el
+  // jugador escribía sus iniciales), lo guarda en la nube y, si eso
+  // falla, al menos lo deja guardado en localStorage.
+  function saveHighScore(name, points) {
+    return getTopScores().then(function (current) {
+      var updated = sanitizeScores(current.concat([{ name: name, score: points }]));
+
+      return fetch(ENDPOINT_URL, {
+        method: "PUT",
+        headers: buildHeaders(),
+        body: JSON.stringify({ scores: updated })
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error("Respuesta no OK: " + res.status);
+          writeLocalScores(updated);
+          return updated;
+        })
+        .catch(function (err) {
+          console.warn("Sensastreaming: no se pudo guardar en la nube, se guardó solo en localStorage.", err);
+          writeLocalScores(updated);
+          return updated;
+        });
+    });
+  }
+
+  function qualifies(points, currentTop) {
+    if (currentTop.length < MAX_SCORES) return true;
+    var lowest = currentTop[currentTop.length - 1].score; // ya viene ordenado desc
+    return points > lowest;
+  }
+
+  function renderScoreboard(list) {
+    scoreboardListEl.innerHTML = "";
+    list.forEach(function (entry, index) {
+      var li = document.createElement("li");
+      li.className = "game-scoreboard-row" + (index === 0 ? " is-first" : "");
+
+      var rank = document.createElement("span");
+      rank.className = "game-scoreboard-rank";
+      rank.textContent = (index + 1) + ".";
+
+      var name = document.createElement("span");
+      name.className = "game-scoreboard-name";
+      name.textContent = entry.name;
+
+      var scoreSpan = document.createElement("span");
+      scoreSpan.className = "game-scoreboard-score";
+      scoreSpan.textContent = "- " + formatScore(entry.score);
+
+      li.appendChild(rank);
+      li.appendChild(name);
+      li.appendChild(scoreSpan);
+      scoreboardListEl.appendChild(li);
+    });
+    scoreboardEl.classList.remove("hidden");
+  }
+
+  function showGameOver(finalScore) {
+    currentFinalScore = finalScore;
+    gameOverScoreEl.textContent = formatScore(finalScore);
+    gameOverStatusEl.textContent = "Conectando con el ranking global…";
+    initialsForm.classList.add("hidden");
+    scoreboardEl.classList.add("hidden");
+    gameOverEl.classList.add("visible");
+
+    getTopScores().then(function (current) {
+      gameOverStatusEl.textContent = "";
+
+      if (qualifies(finalScore, current)) {
+        renderScoreboard(current); // muestra el ranking actual mientras decide sus iniciales
+        initialsForm.classList.remove("hidden");
+        initialsInput.value = "";
+        initialsInput.focus();
+      } else {
+        renderScoreboard(current);
+      }
+    });
+  }
+
   function endGame() {
     isRunning = false;
     isGameOver = true;
     if (rafId) cancelAnimationFrame(rafId);
-
-    messageEl.innerHTML = "";
-    var title = document.createElement("p");
-    title.className = "game-message-title";
-    title.textContent = "Game over — puntaje " + formatScore(score);
-
-    var retryBtn = document.createElement("button");
-    retryBtn.type = "button";
-    retryBtn.className = "btn btn-primary game-retry";
-    retryBtn.textContent = "Volver a jugar";
-    retryBtn.addEventListener("click", startGame);
-
-    messageEl.appendChild(title);
-    messageEl.appendChild(retryBtn);
-    messageEl.classList.add("visible");
+    messageEl.classList.remove("visible");
+    showGameOver(Math.floor(score));
   }
 
   function loop(time) {
@@ -720,6 +873,7 @@
 
   document.addEventListener("keydown", function (e) {
     if (!isOpen) return; // fuera del juego, el teclado se comporta normal
+    if (document.activeElement === initialsInput) return; // dejá que el input reciba las teclas normalmente
 
     if (e.key === "Escape") {
       closeGame();
@@ -740,9 +894,42 @@
 
   document.addEventListener("keyup", function (e) {
     if (!isOpen) return;
+    if (document.activeElement === initialsInput) return;
     if (e.code === "ArrowDown") {
       e.preventDefault();
       setDucking(false);
     }
+  });
+
+  // Fuerza mayúsculas y solo letras mientras se escriben las iniciales
+  initialsInput.addEventListener("input", function () {
+    initialsInput.value = initialsInput.value
+      .toUpperCase()
+      .replace(/[^A-ZÑ]/g, "")
+      .slice(0, MAX_INITIALS_LENGTH);
+  });
+
+  initialsForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var initials = initialsInput.value.trim().slice(0, MAX_INITIALS_LENGTH) || "AAA";
+    var submitBtn = initialsForm.querySelector(".game-initials-submit");
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Guardando…";
+
+    saveHighScore(initials, currentFinalScore).then(function (updated) {
+      renderScoreboard(updated);
+      initialsForm.classList.add("hidden");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Guardar";
+    });
+  });
+
+  gameOverRetryBtn.addEventListener("click", function () {
+    startGame();
+  });
+
+  gameOverCloseBtn.addEventListener("click", function () {
+    closeGame();
   });
 })();
