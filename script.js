@@ -95,9 +95,9 @@
   // Catálogo propio del buscador: no depende de qué tarjetas haya en la
   // página actual, así el resultado es el mismo estés donde estés.
   var REPORTAJES = [
-    { title: "¿Como llegar a la fama?", videoId: "hI8e6JMbuSg", image: "https://i.imgur.com/ZKIbFsF.jpeg", detailUrl: "detalle-fama.html" },
+    { title: "¿Cómo llegar a la fama?", videoId: "hI8e6JMbuSg", image: "https://i.imgur.com/ZKIbFsF.jpeg", detailUrl: "detalle-fama.html" },
     { title: "¿Deporte o Sensasport?", videoId: "JzhlGWwWn6k", image: "https://i.imgur.com/p3X7n6U.jpeg", detailUrl: "detalle-deporte.html" },
-    { title: "¿Politica o Reality?", videoId: "DBuCfMrWrtk", image: "https://i.imgur.com/NYeV6bW.jpeg", detailUrl: "detalle-politica.html" },
+    { title: "¿Política o Reality?", videoId: "DBuCfMrWrtk", image: "https://i.imgur.com/NYeV6bW.jpeg", detailUrl: "detalle-politica.html" },
     { title: "¿Influencers o creadores de estigmas?", videoId: "i1BO0bbKCyo", image: "https://i.imgur.com/RMKmTpX.jpeg", detailUrl: "detalle-influencers.html" }
   ];
 
@@ -105,6 +105,11 @@
     if (!resultsEl) return;
     resultsEl.innerHTML = "";
     searchWidget.classList.remove("has-query");
+  }
+
+  function normalize(str) {
+    // saca tildes/diacríticos para que buscar "como" también encuentre "Cómo"
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   }
 
   function renderResults(query) {
@@ -118,8 +123,9 @@
     searchWidget.classList.add("has-query");
     resultsEl.innerHTML = "";
 
+    var normalizedQuery = normalize(query);
     var matches = REPORTAJES.filter(function (item) {
-      return item.title.toLowerCase().indexOf(query) !== -1;
+      return normalize(item.title).indexOf(normalizedQuery) !== -1;
     });
 
     if (!matches.length) {
@@ -183,7 +189,7 @@
 
   if (input) {
     input.addEventListener("input", function () {
-      renderResults(input.value.trim().toLowerCase());
+      renderResults(input.value.trim());
     });
   }
 
@@ -848,7 +854,7 @@
     document.documentElement.classList.add("splash-lock"); // reutiliza el bloqueo de scroll
     resetGame();
     messageEl.innerHTML =
-      '<p class="game-message-title">Presioná <kbd>Espacio</kbd> para empezar</p>' +
+      '<p class="game-message-title">Presiona <kbd>Espacio</kbd> para empezar</p>' +
       '<p class="game-message-hint">Espacio o ↑ para saltar · ↓ para agacharte</p>';
     messageEl.classList.add("visible");
     closeBtn.focus();
