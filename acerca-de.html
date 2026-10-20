@@ -2,7 +2,16 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#130622">
+<meta name="color-scheme" content="dark">
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sensastreaming">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Acerca de — Sensastreaming</title>
 <meta name="description" content="Quiénes somos y qué hay detrás de Sensastreaming.">
 <link rel="icon" type="image/png" href="https://i.imgur.com/6NUFAMf.png">
@@ -158,6 +167,16 @@
     </div>
   </section>
 
+  <section class="extras-section" id="fuera-de-pauta">
+    <div class="extras-card">
+      <div class="extras-text">
+        <h2 class="extras-title">Fuera de pauta</h2>
+        <p class="extras-desc">Cuando no estamos editando, también construimos cosas. VeraKart es un proyecto aparte del equipo, alojado en su propia plataforma y sin relación con los reportajes.</p>
+      </div>
+      <a class="extras-link" href="https://javierv578.github.io/VERAKART/" target="_blank" rel="noopener noreferrer">Abrir VeraKart <span class="sr-only">(se abre en una pestaña nueva)</span></a>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
@@ -200,10 +219,13 @@
       <div class="game-ground"></div>
 
       <div class="game-message visible" id="gameMessage">
-        <p class="game-message-title">Presiona <kbd>Espacio</kbd> para empezar</p>
-        <p class="game-message-hint">Espacio o ↑ para saltar · ↓ para agacharte</p>
+        <p class="game-message-title">Toca la pantalla o presiona <kbd>Espacio</kbd> para empezar</p>
+        <p class="game-message-hint game-hint-keys">Espacio o ↑ para saltar · ↓ para agacharte</p>
+        <p class="game-message-hint game-hint-touch">Toca la pantalla para saltar · mantén "Agachar" para esquivar</p>
       </div>
     </div>
+
+    <button type="button" class="game-duck-btn" id="gameDuckBtn" aria-label="Mantén presionado para agacharte">⬇ Agachar</button>
 
     <div class="game-over" id="gameOver">
       <div class="game-over-inner">
