@@ -416,10 +416,28 @@
     card._previewTimer = setTimeout(function () {
       if (!card.classList.contains("active")) return;
       var media = card.querySelector(".card-media");
-      if (media.querySelector("iframe")) return;
+      if (media.querySelector("iframe, video")) return;
 
+      // Adelanto con MP4 propio: mismo flujo que el iframe (silencio, bucle, fade-in con .loaded)
+      var mp4 = card.getAttribute("data-mp4");
+      if (mp4) {
+        var vid = document.createElement("video");
+        vid.src = mp4;
+        vid.muted = true;
+        vid.loop = true;
+        vid.autoplay = true;
+        vid.setAttribute("playsinline", "");
+        vid.setAttribute("preload", "metadata");
+        vid.setAttribute("tabindex", "-1");
+        vid.setAttribute("aria-hidden", "true");
+        vid.addEventListener("playing", function () { vid.classList.add("loaded"); });
+        media.appendChild(vid);
+        var pr = vid.play();
+        if (pr && pr.catch) pr.catch(function () {});
+        return;
+      }
       var id = card.getAttribute("data-yt");
-      if (!id) return; // tarjeta sin adelanto de YouTube
+      if (!id) return;
       var iframe = document.createElement("iframe");
       iframe.src = buildEmbedUrl(id);
       iframe.setAttribute("allow", "autoplay; encrypted-media");
@@ -437,7 +455,7 @@
   function deactivate(card) {
     clearTimeout(card._previewTimer);
     card.classList.remove("active");
-    var iframe = card.querySelector(".card-media iframe");
+    var iframe = card.querySelector(".card-media iframe, .card-media video");
     if (iframe) iframe.remove();
   }
 

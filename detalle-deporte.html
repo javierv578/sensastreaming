@@ -118,7 +118,7 @@
       <h1 class="detail-title">Polémicas fuera de la cancha</h1>
 
       <div class="detail-actions">
-        <a href="https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4" target="_blank" rel="noopener" class="btn btn-primary btn-play">▶ Reproducir</a>
+        <button type="button" class="btn btn-primary btn-play" id="playDocu">▶ Reproducir</button>
 
         <div class="detail-icon-row">
           <button type="button" class="detail-icon-btn" aria-label="Agregar a mi lista" title="Agregar a mi lista">
@@ -139,6 +139,13 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <section class="detail-player" id="detailPlayer" hidden>
+    <video id="docuVideo" controls playsinline preload="metadata" aria-label="Polémicas fuera de la cancha">
+      <source src="https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4" type="video/mp4">
+      Tu navegador no admite la reproducción de video.
+    </video>
   </section>
 
   <section class="detail-info">
@@ -250,5 +257,18 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+(function () {
+  var btn = document.getElementById("playDocu");
+  var box = document.getElementById("detailPlayer");
+  var v = document.getElementById("docuVideo");
+  if (!btn || !box || !v) return;
+  btn.addEventListener("click", function () {
+    box.hidden = false;
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+    var p = v.play(); if (p && p.catch) p.catch(function () {});
+  });
+})();
+</script>
 </body>
 </html>

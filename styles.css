@@ -955,7 +955,8 @@ html.splash-lock body {
 }
 
 .card-media img,
-.card-media iframe {
+.card-media iframe,
+.card-media video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -964,12 +965,14 @@ html.splash-lock body {
   border: 0;
 }
 
-.card-media iframe {
+.card-media iframe,
+.card-media video {
   opacity: 0;
   transition: opacity .35s ease;
   pointer-events: none;
 }
-.card-media iframe.loaded { opacity: 1; }
+.card-media iframe.loaded,
+.card-media video.loaded { opacity: 1; }
 
 .card-scrim {
   position: absolute;
@@ -2058,3 +2061,9 @@ html.splash-lock body {
   .extras-section { padding: 0 16px 48px; }
 }
 .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* Reproductor del documental (página de detalle) */
+.detail-player { max-width: 1100px; margin: 0 auto; padding: 24px 24px 0; }
+.detail-player[hidden] { display: none; }
+.detail-player video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; max-height: 75vh; background: #000; border-radius: 8px; border: 1px solid var(--border-subtle); }
+@media (max-width: 640px) { .detail-player { padding: 16px 16px 0; } }
