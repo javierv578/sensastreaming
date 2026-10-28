@@ -1,4 +1,35 @@
 /* ==========================================================================
+   SENSASTREAMING — modo app (iOS / Capacitor / "Agregar a inicio")
+   Detecta si el sitio corre como app y activa solo ahí los ajustes de app.
+   En la web normal no cambia nada.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var cap = window.Capacitor;
+  var isNative = !!(cap && (typeof cap.isNativePlatform === "function" ? cap.isNativePlatform() : cap.platform && cap.platform !== "web"));
+  var isStandalone = window.navigator.standalone === true ||
+    (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches);
+
+  if (!isNative && !isStandalone) return;
+
+  window.SENSA_IS_APP = true;
+  document.documentElement.classList.add("is-app");
+
+  // Los enlaces que abren fuera del sitio (YouTube) salen por el navegador
+  // nativo del sistema si el plugin @capacitor/browser está instalado.
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest ? e.target.closest('a[target="_blank"]') : null;
+    if (!link) return;
+    var browser = cap && cap.Plugins && cap.Plugins.Browser;
+    if (browser && typeof browser.open === "function") {
+      e.preventDefault();
+      browser.open({ url: link.href });
+    }
+  });
+})();
+
+/* ==========================================================================
    SENSASTREAMING — pantalla de carga (splash screen)
    Bloque independiente: si la página no tiene #splashScreen (reportajes.html,
    acerca-de.html) no hace nada. Dura 5 segundos exactos y luego se
@@ -11,6 +42,18 @@
 
   var splash = document.getElementById("splashScreen");
   if (!splash) return; // esta página no tiene splash screen
+
+  // En modo app, la pantalla de carga se muestra una vez por sesión
+  // (no cada vez que se vuelve a "Inicio"). En la web no cambia nada.
+  if (window.SENSA_IS_APP) {
+    try {
+      if (window.sessionStorage.getItem("sensa-splash-seen")) {
+        splash.parentNode.removeChild(splash);
+        return;
+      }
+      window.sessionStorage.setItem("sensa-splash-seen", "1");
+    } catch (err) { /* sin sessionStorage: se muestra normal */ }
+  }
 
   var fill = document.getElementById("splashProgressFill");
   var track = document.getElementById("splashProgressTrack");
@@ -96,7 +139,7 @@
   // página actual, así el resultado es el mismo estés donde estés.
   var REPORTAJES = [
     { title: "¿Cómo llegar a la fama?", videoId: "hI8e6JMbuSg", image: "https://i.imgur.com/ZKIbFsF.jpeg", detailUrl: "detalle-fama.html" },
-    { title: "¿Deporte o Sensasport?", videoId: "JzhlGWwWn6k", image: "https://i.imgur.com/p3X7n6U.jpeg", detailUrl: "detalle-deporte.html" },
+    { title: "Polémicas fuera de la cancha", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4", image: "https://i.imgur.com/p3X7n6U.jpeg", detailUrl: "detalle-deporte.html" },
     { title: "¿Política o Reality?", videoId: "DBuCfMrWrtk", image: "https://i.imgur.com/NYeV6bW.jpeg", detailUrl: "detalle-politica.html" },
     { title: "¿Influencers o creadores de estigmas?", videoId: "i1BO0bbKCyo", image: "https://i.imgur.com/RMKmTpX.jpeg", detailUrl: "detalle-influencers.html" }
   ];
@@ -365,18 +408,36 @@
     cards.forEach(function (c) { if (c !== card) deactivate(c); });
     card.classList.add("active");
 
-    if (prefersReducedMotion) return; // solo texto/scrim, sin video
+    // sin video: movimiento reducido, o si la app define window.SENSA_DISABLE_PREVIEWS = true
+    // (útil si YouTube rechaza los embeds dentro del WebView de iOS)
+    if (prefersReducedMotion || window.SENSA_DISABLE_PREVIEWS) return;
 
     clearTimeout(card._previewTimer);
     card._previewTimer = setTimeout(function () {
       if (!card.classList.contains("active")) return;
       var media = card.querySelector(".card-media");
-      if (media.querySelector("iframe")) return;
+      if (media.querySelector("iframe, video")) return;
 
+      var mp4 = card.getAttribute("data-mp4");
+      if (mp4) {
+        var vid = document.createElement("video");
+        vid.src = mp4;
+        vid.muted = true; vid.loop = true; vid.autoplay = true;
+        vid.setAttribute("playsinline", "");
+        vid.setAttribute("preload", "metadata");
+        vid.setAttribute("tabindex", "-1");
+        vid.setAttribute("aria-hidden", "true");
+        vid.addEventListener("playing", function () { vid.classList.add("loaded"); });
+        media.appendChild(vid);
+        var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {});
+        return;
+      }
       var id = card.getAttribute("data-yt");
       var iframe = document.createElement("iframe");
       iframe.src = buildEmbedUrl(id);
       iframe.setAttribute("allow", "autoplay; encrypted-media");
+      // YouTube exige referrer en los embeds; sin esto falla dentro de un WebView
+      iframe.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
       iframe.setAttribute("tabindex", "-1");
       iframe.setAttribute("title", "Adelanto");
       iframe.addEventListener("load", function () {
@@ -389,7 +450,7 @@
   function deactivate(card) {
     clearTimeout(card._previewTimer);
     card.classList.remove("active");
-    var iframe = card.querySelector(".card-media iframe");
+    var iframe = card.querySelector(".card-media iframe, .card-media video");
     if (iframe) iframe.remove();
   }
 
@@ -526,6 +587,7 @@
   var scoreboardListEl = document.getElementById("gameScoreboardList");
   var gameOverRetryBtn = document.getElementById("gameOverRetry");
   var gameOverCloseBtn = document.getElementById("gameOverClose");
+  var duckBtn = document.getElementById("gameDuckBtn");
 
   // ---- Ranking en la nube ----
   // TODO: reemplazar por tu endpoint real (JSONBin, Firebase Realtime DB, etc).
@@ -603,6 +665,7 @@
     if (isDucking === value) return;
     isDucking = value;
     player.classList.toggle("ducking", value);
+    if (duckBtn) duckBtn.classList.toggle("is-pressed", value);
   }
 
   function jump() {
@@ -854,8 +917,9 @@
     document.documentElement.classList.add("splash-lock"); // reutiliza el bloqueo de scroll
     resetGame();
     messageEl.innerHTML =
-      '<p class="game-message-title">Presiona <kbd>Espacio</kbd> para empezar</p>' +
-      '<p class="game-message-hint">Espacio o ↑ para saltar · ↓ para agacharte</p>';
+      '<p class="game-message-title">Toca la pantalla o presiona <kbd>Espacio</kbd> para empezar</p>' +
+      '<p class="game-message-hint game-hint-keys">Espacio o ↑ para saltar · ↓ para agacharte</p>' +
+      '<p class="game-message-hint game-hint-touch">Toca la pantalla para saltar · mantén "Agachar" para esquivar</p>';
     messageEl.classList.add("visible");
     closeBtn.focus();
   }
@@ -938,4 +1002,26 @@
   gameOverCloseBtn.addEventListener("click", function () {
     closeGame();
   });
+
+  // ---- Controles táctiles / puntero ----
+  // Tocar el escenario = saltar (o empezar), como el Dino de Chrome en celular.
+  // pointerdown dispara una sola vez por toque (sin "click fantasma").
+  stage.addEventListener("pointerdown", function () {
+    if (!isOpen) return;
+    if (!isRunning) startGame();
+    else jump();
+  });
+
+  // Mantener presionado "Agachar" = agacharse; soltar = pararse.
+  if (duckBtn) {
+    duckBtn.addEventListener("pointerdown", function (e) {
+      e.preventDefault();
+      if (isRunning) setDucking(true);
+    });
+    ["pointerup", "pointercancel", "pointerleave"].forEach(function (type) {
+      duckBtn.addEventListener(type, function () { setDucking(false); });
+    });
+    // evita el menú contextual de la pulsación larga en iOS/Android
+    duckBtn.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+  }
 })();

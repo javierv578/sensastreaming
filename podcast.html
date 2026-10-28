@@ -2,7 +2,16 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#130622">
+<meta name="color-scheme" content="dark">
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sensastreaming">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Podcast — Sensastreaming</title>
 <meta name="description" content="El podcast de Sensastreaming: episodios en formato audio. Muy pronto.">
 <link rel="icon" type="image/png" href="https://i.imgur.com/6NUFAMf.png">
@@ -85,17 +94,17 @@
 </header>
 
 <div class="ticker" role="marquee" aria-label="Últimas historias">
-  <span class="ticker-sr">Últimas historias: ¿Cómo llegar a la fama? ¿Deporte o Sensasport? ¿Política o Reality? ¿Influencers o creadores de estigmas?</span>
+  <span class="ticker-sr">Últimas historias: ¿Cómo llegar a la fama? Polémicas fuera de la cancha ¿Política o Reality? ¿Influencers o creadores de estigmas?</span>
   <div class="ticker-inner" aria-hidden="true">
     <div class="ticker-track">
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Cómo llegar a la fama?</span>
-      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Deporte o Sensasport?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Polémicas fuera de la cancha</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Política o Reality?</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Influencers o creadores de estigmas?</span>
     </div>
     <div class="ticker-track">
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Cómo llegar a la fama?</span>
-      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Deporte o Sensasport?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Polémicas fuera de la cancha</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Política o Reality?</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Influencers o creadores de estigmas?</span>
     </div>
@@ -163,10 +172,13 @@
       <div class="game-ground"></div>
 
       <div class="game-message visible" id="gameMessage">
-        <p class="game-message-title">Presiona <kbd>Espacio</kbd> para empezar</p>
-        <p class="game-message-hint">Espacio o ↑ para saltar · ↓ para agacharte</p>
+        <p class="game-message-title">Toca la pantalla o presiona <kbd>Espacio</kbd> para empezar</p>
+        <p class="game-message-hint game-hint-keys">Espacio o ↑ para saltar · ↓ para agacharte</p>
+        <p class="game-message-hint game-hint-touch">Toca la pantalla para saltar · mantén "Agachar" para esquivar</p>
       </div>
     </div>
+
+    <button type="button" class="game-duck-btn" id="gameDuckBtn" aria-label="Mantén presionado para agacharte">⬇ Agachar</button>
 
     <div class="game-over" id="gameOver">
       <div class="game-over-inner">

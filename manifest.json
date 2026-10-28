@@ -1,0 +1,17 @@
+{
+  "name": "Sensastreaming",
+  "short_name": "Sensastreaming",
+  "description": "Reportajes, juicios y entrevistas que la prensa tradicional deja fuera de cuadro.",
+  "lang": "es",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#130622",
+  "theme_color": "#130622",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ]
+}
