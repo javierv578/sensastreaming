@@ -22,20 +22,6 @@
 
 <link rel="stylesheet" href="styles.css">
 <noscript><style>#splashScreen { display: none !important; }</style></noscript>
-<style>
-.hero-program { min-height: auto; padding: 96px 0 72px; }
-.hero-program .featured-content { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; text-align: left; align-items: stretch; }
-.featured-meta { margin-bottom: 16px; }
-.featured-tag { display: inline-block; padding: 4px 12px; border: 1px solid var(--accent-crimson); border-radius: 999px; color: var(--accent-crimson); font-family: var(--font-mono); font-size: .8rem; }
-.featured-title { margin: 12px 0 0; font-family: var(--font-display); font-size: clamp(2rem, 6vw, 3.6rem); line-height: 1.05; letter-spacing: .01em; color: var(--text-primary); }
-.featured-player { width: 100%; border-radius: 8px; overflow: hidden; background: #000; border: 1px solid var(--border-subtle); box-shadow: 0 20px 50px rgba(0,0,0,.5); }
-.featured-player video { display: block; width: 100%; height: auto; max-height: 75vh; aspect-ratio: 16 / 9; background: #000; }
-@media (max-width: 640px) {
-  .hero-program { padding: 76px 0 56px; }
-  .hero-program .featured-content { padding: 0 16px; }
-  .featured-player { border-radius: 6px; }
-}
-</style>
 </head>
 <body>
 
@@ -145,18 +131,14 @@
 
 <main id="main-content">
 
-  <section class="hero hero-program" aria-labelledby="featuredTitle">
+  <section class="hero">
     <div class="hero-bg" style="background-image:url('https://i.imgur.com/ZKIbFsF.jpeg');"></div>
-    <div class="hero-content featured-content">
-      <div class="featured-meta">
-        <span class="featured-tag">Documental de deportes</span>
-        <h1 class="featured-title" id="featuredTitle">Polémicas fuera de la cancha</h1>
-      </div>
-      <div class="featured-player">
-        <video controls playsinline preload="metadata" aria-label="Polémicas fuera de la cancha, documental de deportes">
-          <source src="https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4" type="video/mp4">
-          Tu navegador no admite la reproducción de video.
-        </video>
+    <div class="hero-content">
+      <img class="hero-logo" src="https://i.imgur.com/6NUFAMf.png" alt="Sensastreaming">
+      <p class="hero-tagline">El lado humano de la noticia, sin cortes.</p>
+      <div class="hero-actions">
+        <a href="reportajes.html" class="btn btn-primary">▶ Ver reportajes</a>
+        <a href="acerca-de.html" class="btn btn-secondary">Más información</a>
       </div>
     </div>
     <a href="#destacados" class="scroll-cue" aria-label="Bajar a los destacados">
@@ -192,7 +174,7 @@
         </div>
       </article>
 
-      <article class="card" data-mp4="https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4" data-detail="detalle-deporte.html" data-category="judicial" tabindex="0"
+      <article class="card" data-detail="detalle-deporte.html" data-category="judicial" tabindex="0"
         aria-label="Polémicas fuera de la cancha. Activar para ver adelanto.">
         <div class="card-frame">
           <span class="card-num">N.º 02</span>
@@ -200,7 +182,7 @@
             <img src="https://i.imgur.com/p3X7n6U.jpeg" alt="Sujeto en el juzgado" loading="lazy">
           </div>
           <div class="card-scrim">
-            <span class="card-eyebrow">Documental de deportes</span>
+            <span class="card-eyebrow">Judicial</span>
             <h3 class="card-title">Polémicas fuera de la cancha</h3>
             <div class="card-actions">
               <a class="play-btn" href="detalle-deporte.html" aria-label="Ver reportaje: Polémicas fuera de la cancha">▶ Ver</a>

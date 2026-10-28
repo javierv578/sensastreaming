@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Polémicas fuera de la cancha — Sensastreaming</title>
-<meta name="description" content="Documental de deportes de Sensastreaming sobre las polémicas que ocurren fuera de la cancha.">
+<meta name="description" content="Un repaso a los límites entre el deporte de alto rendimiento y el circo mediático que lo rodea: cuando el resultado en la cancha importa menos que el…">
 <link rel="icon" type="image/png" href="https://i.imgur.com/6NUFAMf.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,12 +21,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="styles.css">
-<style>
-.detail-player { max-width: 1100px; margin: 0 auto; padding: 24px 24px 0; }
-.detail-player[hidden] { display: none; }
-.detail-player video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; max-height: 75vh; background: #000; border-radius: 8px; border: 1px solid var(--border-subtle); }
-@media (max-width: 640px) { .detail-player { padding: 16px 16px 0; } }
-</style>
 </head>
 <body>
 
@@ -124,7 +118,7 @@
       <h1 class="detail-title">Polémicas fuera de la cancha</h1>
 
       <div class="detail-actions">
-        <button type="button" class="btn btn-primary btn-play" id="playDocu">▶ Reproducir</button>
+        <a href="https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4" target="_blank" rel="noopener" class="btn btn-primary btn-play">▶ Reproducir</a>
 
         <div class="detail-icon-row">
           <button type="button" class="detail-icon-btn" aria-label="Agregar a mi lista" title="Agregar a mi lista">
@@ -147,17 +141,10 @@
     </div>
   </section>
 
-  <section class="detail-player" id="detailPlayer" hidden>
-    <video id="docuVideo" controls playsinline preload="metadata" aria-label="Polémicas fuera de la cancha, documental de deportes">
-      <source src="https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4" type="video/mp4">
-      Tu navegador no admite la reproducción de video.
-    </video>
-  </section>
-
   <section class="detail-info">
     <div class="detail-info-main">
-      <p class="detail-meta">Documental de deportes • 2026 • +16</p>
-      <p class="detail-synopsis">Documental de deportes de Sensastreaming sobre las polémicas que ocurren fuera de la cancha.</p>
+      <p class="detail-meta">Judicial • 2026 • 25 min • +16</p>
+      <p class="detail-synopsis">Un repaso a los límites entre el deporte de alto rendimiento y el circo mediático que lo rodea: cuando el resultado en la cancha importa menos que el escándalo fuera de ella. Sensastreaming conversa con protagonistas, dirigentes y prensa deportiva para entender cómo el "Sensasport" terminó comiéndose al deporte.</p>
     </div>
 
     <div class="detail-credits">
@@ -263,18 +250,5 @@
 </div>
 
 <script src="script.js"></script>
-<script>
-(function () {
-  var btn = document.getElementById("playDocu");
-  var box = document.getElementById("detailPlayer");
-  var v = document.getElementById("docuVideo");
-  if (!btn || !box || !v) return;
-  btn.addEventListener("click", function () {
-    box.hidden = false;
-    box.scrollIntoView({ behavior: "smooth", block: "center" });
-    var p = v.play(); if (p && p.catch) p.catch(function () {});
-  });
-})();
-</script>
 </body>
 </html>

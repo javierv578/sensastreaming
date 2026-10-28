@@ -955,8 +955,7 @@ html.splash-lock body {
 }
 
 .card-media img,
-.card-media iframe,
-.card-media video {
+.card-media iframe {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -965,14 +964,12 @@ html.splash-lock body {
   border: 0;
 }
 
-.card-media iframe,
-.card-media video {
+.card-media iframe {
   opacity: 0;
   transition: opacity .35s ease;
   pointer-events: none;
 }
-.card-media iframe.loaded,
-.card-media video.loaded { opacity: 1; }
+.card-media iframe.loaded { opacity: 1; }
 
 .card-scrim {
   position: absolute;
