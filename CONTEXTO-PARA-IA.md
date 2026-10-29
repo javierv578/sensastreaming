@@ -42,7 +42,7 @@ Elemento de marca distintivo: una cinta tipo "última hora" (`.ticker`) fija deb
 |---|---|---|---|
 | 1 | ¿Como llegar a la fama? | testimonio | hI8e6JMbuSg |
 | 2 | Polémicas fuera de la cancha | judicial | video MP4 (R2): docudeportes.mp4 |
-| 3 | ¿Politica o Reality? | entrevista | DBuCfMrWrtk |
+| 3 | El caso que taparon los memes | judicial | video MP4 (R2): TUFIT MÁS PERIODISTA.mp4 |
 | 4 | ¿Influencers o creadores de estigmas? | entrevista | i1BO0bbKCyo |
 
 Equipo (`acerca-de.html`): Alejandro Álvarez, Gabriel Salinas, Javier Vera — cada uno con foto flotante (sin fondo circular, con una animación sutil de "levitar") y una descripción de dónde hace su práctica profesional.

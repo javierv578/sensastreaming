@@ -12,8 +12,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<title>¿Política o Reality? — Sensastreaming</title>
-<meta name="description" content="Una conversación sin filtro sobre el momento en que la conferencia de prensa empezó a parecerse a un casting. Sensastreaming entrevista a asesores,…">
+<title>El caso que taparon los memes — Sensastreaming</title>
+<meta name="description" content="Documental de Sensastreaming: El caso que taparon los memes.">
 <link rel="icon" type="image/png" href="https://i.imgur.com/6NUFAMf.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,18 +94,18 @@
 </header>
 
 <div class="ticker" role="marquee" aria-label="Últimas historias">
-  <span class="ticker-sr">Últimas historias: ¿Cómo llegar a la fama? Polémicas fuera de la cancha ¿Política o Reality? ¿Influencers o creadores de estigmas?</span>
+  <span class="ticker-sr">Últimas historias: ¿Cómo llegar a la fama? Polémicas fuera de la cancha. El caso que taparon los memes. ¿Influencers o creadores de estigmas?</span>
   <div class="ticker-inner" aria-hidden="true">
     <div class="ticker-track">
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Cómo llegar a la fama?</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>Polémicas fuera de la cancha</span>
-      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Política o Reality?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>El caso que taparon los memes</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Influencers o creadores de estigmas?</span>
     </div>
     <div class="ticker-track">
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Cómo llegar a la fama?</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>Polémicas fuera de la cancha</span>
-      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Política o Reality?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>El caso que taparon los memes</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Influencers o creadores de estigmas?</span>
     </div>
   </div>
@@ -113,12 +113,12 @@
 
 <main id="main-content">
 
-  <section class="detail-hero" style="background-image:url('https://i.imgur.com/NYeV6bW.jpeg');">
+  <section class="detail-hero" style="background-image:url('https://i.imgur.com/Mluwtng.jpeg');">
     <div class="detail-hero-inner">
-      <h1 class="detail-title">¿Política o Reality?</h1>
+      <h1 class="detail-title">El caso que taparon los memes</h1>
 
       <div class="detail-actions">
-        <a href="https://www.youtube.com/watch?v=DBuCfMrWrtk" target="_blank" rel="noopener" class="btn btn-primary btn-play">▶ Reproducir</a>
+        <button type="button" class="btn btn-primary btn-play" id="playDocu">▶ Reproducir</button>
 
         <div class="detail-icon-row">
           <button type="button" class="detail-icon-btn" aria-label="Agregar a mi lista" title="Agregar a mi lista">
@@ -141,10 +141,17 @@
     </div>
   </section>
 
+  <section class="detail-player" id="detailPlayer" hidden>
+    <video id="docuVideo" controls playsinline preload="metadata" aria-label="El caso que taparon los memes">
+      <source src="https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/TUFIT%20M%C3%81S%20PERIODISTA.mp4" type="video/mp4">
+      Tu navegador no admite la reproducción de video.
+    </video>
+  </section>
+
   <section class="detail-info">
     <div class="detail-info-main">
-      <p class="detail-meta">Entrevista • 2026 • 30 min • +16</p>
-      <p class="detail-synopsis">Una conversación sin filtro sobre el momento en que la conferencia de prensa empezó a parecerse a un casting. Sensastreaming entrevista a asesores, comunicadores y a la propia audiencia para trazar la línea, cada vez más difusa, entre hacer política y actuar para las cámaras.</p>
+      <p class="detail-meta">Documental • Judicial • 2026 • +16</p>
+      <p class="detail-synopsis">Documental de Sensastreaming: El caso que taparon los memes.</p>
     </div>
 
     <div class="detail-credits">
@@ -250,5 +257,18 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+(function () {
+  var btn = document.getElementById("playDocu");
+  var box = document.getElementById("detailPlayer");
+  var v = document.getElementById("docuVideo");
+  if (!btn || !box || !v) return;
+  btn.addEventListener("click", function () {
+    box.hidden = false;
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+    var p = v.play(); if (p && p.catch) p.catch(function () {});
+  });
+})();
+</script>
 </body>
 </html>

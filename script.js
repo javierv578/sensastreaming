@@ -139,8 +139,8 @@
   // página actual, así el resultado es el mismo estés donde estés.
   var REPORTAJES = [
     { title: "¿Cómo llegar a la fama?", videoId: "hI8e6JMbuSg", image: "https://i.imgur.com/ZKIbFsF.jpeg", detailUrl: "detalle-fama.html" },
-    { title: "Polémicas fuera de la cancha", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4", image: "https://i.imgur.com/p3X7n6U.jpeg", detailUrl: "detalle-deporte.html" },
-    { title: "¿Política o Reality?", videoId: "DBuCfMrWrtk", image: "https://i.imgur.com/NYeV6bW.jpeg", detailUrl: "detalle-politica.html" },
+    { title: "Polémicas fuera de la cancha", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4", image: "https://i.imgur.com/lAsv4dQ.jpeg", detailUrl: "detalle-deporte.html" },
+    { title: "El caso que taparon los memes", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/TUFIT%20M%C3%81S%20PERIODISTA.mp4", image: "https://i.imgur.com/Mluwtng.jpeg", detailUrl: "detalle-politica.html" },
     { title: "¿Influencers o creadores de estigmas?", videoId: "i1BO0bbKCyo", image: "https://i.imgur.com/RMKmTpX.jpeg", detailUrl: "detalle-influencers.html" }
   ];
 
