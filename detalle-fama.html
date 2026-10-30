@@ -12,8 +12,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<title>¿Cómo llegar a la fama? — Sensastreaming</title>
-<meta name="description" content="Un testimonio en primera persona sobre lo rápido que cambia una vida cuando un video se viraliza por las razones equivocadas. Sensastreaming rastrea…">
+<title>El riesgo de limitar al periodismo — Sensastreaming</title>
+<meta name="description" content="Imagina prepararte durante años para ejercer el periodismo, aprender sobre ética e investigación y, de pronto, enfrentarse a una ley que podría…">
 <link rel="icon" type="image/png" href="https://i.imgur.com/6NUFAMf.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +34,7 @@
 
     <nav class="site-nav" id="siteNav">
       <a href="index.html">Inicio</a>
-      <a href="reportajes.html" class="active" aria-current="page">Reportajes</a>
+      <a href="reportajes.html" class="active" aria-current="page">Documentales</a>
       <a href="podcast.html">Podcast</a>
       <a href="acerca-de.html">Acerca de</a>
     </nav>
@@ -49,7 +49,7 @@
     <span class="header-divider" aria-hidden="true"></span>
 
     <div class="search-widget" id="searchWidget">
-      <input type="text" class="search-input" id="searchInput" placeholder="Buscar reportaje..." aria-label="Buscar reportaje">
+      <input type="text" class="search-input" id="searchInput" placeholder="Buscar documental..." aria-label="Buscar documental">
       <button type="button" class="icon-btn search-toggle" id="searchToggle" aria-label="Buscar" aria-expanded="false" aria-controls="searchInput">
         <svg class="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
           <circle cx="11" cy="11" r="7"></circle>
@@ -94,16 +94,16 @@
 </header>
 
 <div class="ticker" role="marquee" aria-label="Últimas historias">
-  <span class="ticker-sr">Últimas historias: ¿Cómo llegar a la fama? Polémicas fuera de la cancha. El caso que taparon los memes. ¿Influencers o creadores de estigmas?</span>
+  <span class="ticker-sr">Últimas historias: El riesgo de limitar al periodismo. Polémicas fuera de la cancha. El caso que taparon los memes. ¿Influencers o creadores de estigmas?</span>
   <div class="ticker-inner" aria-hidden="true">
     <div class="ticker-track">
-      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Cómo llegar a la fama?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>El riesgo de limitar al periodismo</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>Polémicas fuera de la cancha</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>El caso que taparon los memes</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Influencers o creadores de estigmas?</span>
     </div>
     <div class="ticker-track">
-      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Cómo llegar a la fama?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>El riesgo de limitar al periodismo</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>Polémicas fuera de la cancha</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>El caso que taparon los memes</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Influencers o creadores de estigmas?</span>
@@ -113,12 +113,12 @@
 
 <main id="main-content">
 
-  <section class="detail-hero" style="background-image:url('https://i.imgur.com/ZKIbFsF.jpeg');">
+  <section class="detail-hero" style="background-image:url('https://i.imgur.com/goQDQQN.jpeg');">
     <div class="detail-hero-inner">
-      <h1 class="detail-title">¿Cómo llegar a la fama?</h1>
+      <h1 class="detail-title">El riesgo de limitar al periodismo</h1>
 
       <div class="detail-actions">
-        <a href="https://www.youtube.com/watch?v=hI8e6JMbuSg" target="_blank" rel="noopener" class="btn btn-primary btn-play">▶ Reproducir</a>
+        <button type="button" class="btn btn-primary btn-play" id="playDocu">▶ Reproducir</button>
 
         <div class="detail-icon-row">
           <button type="button" class="detail-icon-btn" aria-label="Agregar a mi lista" title="Agregar a mi lista">
@@ -141,10 +141,17 @@
     </div>
   </section>
 
+  <section class="detail-player" id="detailPlayer" hidden>
+    <video id="docuVideo" controls playsinline preload="metadata" aria-label="El riesgo de limitar al periodismo">
+      <source src="https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/AvanceMordaza.mp4" type="video/mp4">
+      Tu navegador no admite la reproducción de video.
+    </video>
+  </section>
+
   <section class="detail-info">
     <div class="detail-info-main">
-      <p class="detail-meta">Testimonio • 2026 • 19 min • +14</p>
-      <p class="detail-synopsis">Un testimonio en primera persona sobre lo rápido que cambia una vida cuando un video se viraliza por las razones equivocadas. Sensastreaming rastrea el camino — real o fabricado — hacia los quince minutos de fama que promete internet, y lo que queda después de que las cámaras se apagan.</p>
+      <p class="detail-meta">Documental • 2026 • +14</p>
+      <p class="detail-synopsis">Imagina prepararte durante años para ejercer el periodismo, aprender sobre ética e investigación y, de pronto, enfrentarse a una ley que podría cambiar las reglas del juego. La llamada Ley Mordaza abre un debate sobre los límites del periodismo, la libertad de expresión y los riesgos que esto podría representar para la democracia.</p>
     </div>
 
     <div class="detail-credits">
@@ -166,7 +173,7 @@
     </div>
   </section>
 
-  <nav class="detail-tabs" role="tablist" aria-label="Secciones del reportaje">
+  <nav class="detail-tabs" role="tablist" aria-label="Secciones del documental">
     <button type="button" class="detail-tab active" role="tab" aria-selected="true">Relacionado</button>
     <button type="button" class="detail-tab" role="tab" aria-selected="false">Detalles de investigación</button>
   </nav>
@@ -188,7 +195,7 @@
     </div>
     <nav class="footer-nav" aria-label="Enlaces del pie de página">
       <a href="index.html">Inicio</a>
-      <a href="reportajes.html">Reportajes</a>
+      <a href="reportajes.html">Documentales</a>
       <a href="podcast.html">Podcast</a>
       <a href="acerca-de.html">Acerca de</a>
     </nav>
@@ -250,5 +257,18 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+(function () {
+  var btn = document.getElementById("playDocu");
+  var box = document.getElementById("detailPlayer");
+  var v = document.getElementById("docuVideo");
+  if (!btn || !box || !v) return;
+  btn.addEventListener("click", function () {
+    box.hidden = false;
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+    var p = v.play(); if (p && p.catch) p.catch(function () {});
+  });
+})();
+</script>
 </body>
 </html>

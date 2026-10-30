@@ -138,7 +138,7 @@
   // Catálogo propio del buscador: no depende de qué tarjetas haya en la
   // página actual, así el resultado es el mismo estés donde estés.
   var REPORTAJES = [
-    { title: "¿Cómo llegar a la fama?", videoId: "hI8e6JMbuSg", image: "https://i.imgur.com/ZKIbFsF.jpeg", detailUrl: "detalle-fama.html" },
+    { title: "El riesgo de limitar al periodismo", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/AvanceMordaza.mp4", image: "https://i.imgur.com/goQDQQN.jpeg", detailUrl: "detalle-fama.html" },
     { title: "Polémicas fuera de la cancha", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4", image: "https://i.imgur.com/lAsv4dQ.jpeg", detailUrl: "detalle-deporte.html" },
     { title: "El caso que taparon los memes", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/TUFIT%20M%C3%81S%20PERIODISTA.mp4", image: "https://i.imgur.com/Mluwtng.jpeg", detailUrl: "detalle-politica.html" },
     { title: "¿Influencers o creadores de estigmas?", videoId: "i1BO0bbKCyo", image: "https://i.imgur.com/RMKmTpX.jpeg", detailUrl: "detalle-influencers.html" }
@@ -174,7 +174,7 @@
     if (!matches.length) {
       var empty = document.createElement("p");
       empty.className = "search-results-empty";
-      empty.textContent = "No se encontraron reportajes de ";
+      empty.textContent = "No se encontraron documentales de ";
       var strong = document.createElement("strong");
       strong.textContent = input.value.trim();
       empty.appendChild(strong);

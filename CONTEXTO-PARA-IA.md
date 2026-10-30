@@ -40,7 +40,7 @@ Elemento de marca distintivo: una cinta tipo "última hora" (`.ticker`) fija deb
 
 | # | Título | Categoría | YouTube ID |
 |---|---|---|---|
-| 1 | ¿Como llegar a la fama? | testimonio | hI8e6JMbuSg |
+| 1 | El riesgo de limitar al periodismo | testimonio | video MP4 (R2): AvanceMordaza.mp4 |
 | 2 | Polémicas fuera de la cancha | judicial | video MP4 (R2): docudeportes.mp4 |
 | 3 | El caso que taparon los memes | judicial | video MP4 (R2): TUFIT MÁS PERIODISTA.mp4 |
 | 4 | ¿Influencers o creadores de estigmas? | entrevista | i1BO0bbKCyo |

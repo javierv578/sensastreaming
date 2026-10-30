@@ -1,7 +1,7 @@
 {
   "name": "Sensastreaming",
   "short_name": "Sensastreaming",
-  "description": "Reportajes, juicios y entrevistas que la prensa tradicional deja fuera de cuadro.",
+  "description": "Documentales, juicios y entrevistas que la prensa tradicional deja fuera de cuadro.",
   "lang": "es",
   "start_url": "index.html",
   "scope": "./",
