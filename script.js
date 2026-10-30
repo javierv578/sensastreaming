@@ -30,6 +30,55 @@
 })();
 
 /* ==========================================================================
+   Hero — carrusel de fondo (solo anima #heroSlider; no toca el contenido frontal)
+   Cambia cada 10 s con fundido + deslizamiento suave hacia la derecha.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var slider = document.getElementById("heroSlider");
+  if (!slider) return;
+
+  var urls = (slider.getAttribute("data-slides") || "").split("|").filter(Boolean);
+  if (!urls.length) return;
+
+  var INTERVAL = 10000; // 10 segundos
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var slides = urls.map(function (url, i) {
+    var el = document.createElement("div");
+    el.className = "hero-slide" + (i === 0 ? " is-active" : "");
+    el.style.backgroundImage = "url('" + url + "')";
+    slider.appendChild(el);
+    return el;
+  });
+
+  if (slides.length < 2 || reduce) return;
+
+  // Precarga para evitar parpadeos al cambiar
+  urls.slice(1).forEach(function (u) { var im = new Image(); im.src = u; });
+
+  var index = 0;
+  var timer = null;
+
+  function next() {
+    var current = slides[index];
+    index = (index + 1) % slides.length;
+    var incoming = slides[index];
+    current.classList.remove("is-active");
+    incoming.classList.add("is-active");
+  }
+
+  function start() { if (!timer) timer = setInterval(next, INTERVAL); }
+  function stop() { clearInterval(timer); timer = null; }
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) stop(); else start();
+  });
+
+  start();
+})();
+
+/* ==========================================================================
    SENSASTREAMING — pantalla de carga (splash screen)
    Bloque independiente: si la página no tiene #splashScreen (reportajes.html,
    acerca-de.html) no hace nada. Dura 4 segundos exactos y luego se

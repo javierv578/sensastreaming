@@ -540,7 +540,7 @@ button:focus-visible,
 }
 
 /* ==========================================================================
-   Splash screen — pantalla de carga inicial (10s exactos, controlados por JS)
+   Splash screen — pantalla de carga inicial (4s exactos, controlados por JS)
    Solo aparece en las páginas que incluyen el markup (por ahora, index.html);
    script.js revisa si #splashScreen existe antes de activar nada.
    ========================================================================== */
@@ -715,10 +715,39 @@ html.splash-lock body {
 .hero-bg {
   position: absolute;
   inset: 0;
+  overflow: hidden;
+  background: var(--bg-void);
+  z-index: -2;
+}
+
+/* Carrusel de fondo: solo anima esta capa; el contenido frontal no se toca */
+.hero-slide {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center 22%;
-  z-index: -2;
-  transform: scale(1.02);
+  opacity: 0;
+  transform: translateX(-4%) scale(1.04);
+  transition: opacity 1.4s ease, transform 1.8s cubic-bezier(.22, .61, .36, 1);
+  will-change: opacity, transform;
+}
+.hero-slide.is-active {
+  opacity: 1;
+  transform: translateX(0) scale(1.02);
+}
+
+/* Oscurecimiento extra para legibilidad (se suma a los degradados del hero) */
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide { transition: none; transform: none; }
+  .hero-slide.is-active { transform: none; }
 }
 
 .hero::before {
