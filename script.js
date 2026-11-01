@@ -1079,3 +1079,126 @@
     duckBtn.addEventListener("contextmenu", function (e) { e.preventDefault(); });
   }
 })();
+
+/* ==========================================================================
+   Podcast — reproductor de audio personalizado (solo en podcast.html)
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var root = document.getElementById("audioPlayer");
+  var audio = document.getElementById("podcastAudio");
+  if (!root || !audio) return;
+
+  var playBtn = document.getElementById("audioPlay");
+  var seek = document.getElementById("audioSeek");
+  var curEl = document.getElementById("audioCurrent");
+  var remEl = document.getElementById("audioRemaining");
+  var back = document.getElementById("audioBack");
+  var fwd = document.getElementById("audioForward");
+  var muteBtn = document.getElementById("audioMute");
+  var vol = document.getElementById("audioVolume");
+  var errEl = document.getElementById("audioError");
+  var dragging = false;
+
+  function fmt(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    var s = Math.floor(sec);
+    var h = Math.floor(s / 3600);
+    var m = Math.floor((s % 3600) / 60);
+    var r = s % 60;
+    var rr = (r < 10 ? "0" : "") + r;
+    return h > 0 ? h + ":" + (m < 10 ? "0" : "") + m + ":" + rr : m + ":" + rr;
+  }
+
+  function paintRange(input) {
+    var min = parseFloat(input.min) || 0;
+    var max = parseFloat(input.max) || 100;
+    var pct = max > min ? ((parseFloat(input.value) - min) / (max - min)) * 100 : 0;
+    input.style.setProperty("--fill", pct + "%");
+  }
+
+  function updateTimes() {
+    var d = audio.duration;
+    var t = dragging ? (parseFloat(seek.value) / 100) * d : audio.currentTime;
+    curEl.textContent = fmt(t);
+    remEl.textContent = isFinite(d) ? "-" + fmt(d - t) : "-0:00";
+    if (!dragging && isFinite(d) && d > 0) {
+      seek.value = (audio.currentTime / d) * 100;
+    }
+    paintRange(seek);
+  }
+
+  function setPlaying(on) {
+    root.classList.toggle("is-playing", on);
+    playBtn.setAttribute("aria-label", on ? "Pausar" : "Reproducir");
+  }
+
+  function toggle() {
+    if (audio.paused) {
+      var p = audio.play();
+      if (p && p.catch) p.catch(function () { errEl.hidden = false; });
+    } else {
+      audio.pause();
+    }
+  }
+
+  function skip(delta) {
+    if (!isFinite(audio.duration)) return;
+    audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + delta));
+  }
+
+  function syncVolume() {
+    var muted = audio.muted || audio.volume === 0;
+    root.classList.toggle("is-muted", muted);
+    muteBtn.setAttribute("aria-label", muted ? "Activar sonido" : "Silenciar");
+    vol.value = audio.muted ? 0 : audio.volume;
+    paintRange(vol);
+  }
+
+  audio.addEventListener("loadedmetadata", function () {
+    seek.disabled = false;
+    errEl.hidden = true;
+    updateTimes();
+  });
+  audio.addEventListener("timeupdate", updateTimes);
+  audio.addEventListener("play", function () { setPlaying(true); });
+  audio.addEventListener("pause", function () { setPlaying(false); });
+  audio.addEventListener("ended", function () { setPlaying(false); audio.currentTime = 0; updateTimes(); });
+  audio.addEventListener("error", function () { errEl.hidden = false; });
+  audio.addEventListener("volumechange", syncVolume);
+
+  playBtn.addEventListener("click", toggle);
+  back.addEventListener("click", function () { skip(-15); });
+  fwd.addEventListener("click", function () { skip(15); });
+
+  seek.addEventListener("input", function () { dragging = true; updateTimes(); });
+  seek.addEventListener("change", function () {
+    if (isFinite(audio.duration)) audio.currentTime = (parseFloat(seek.value) / 100) * audio.duration;
+    dragging = false;
+    updateTimes();
+  });
+
+  vol.addEventListener("input", function () {
+    audio.muted = false;
+    audio.volume = parseFloat(vol.value);
+  });
+  muteBtn.addEventListener("click", function () {
+    if (audio.muted || audio.volume === 0) {
+      audio.muted = false;
+      if (audio.volume === 0) audio.volume = 0.6;
+    } else {
+      audio.muted = true;
+    }
+  });
+
+  // Atajos solo cuando el foco está dentro del reproductor
+  root.addEventListener("keydown", function (e) {
+    var tag = e.target && e.target.tagName;
+    if (e.key === "ArrowLeft" && tag === "BUTTON") { skip(-15); }
+    else if (e.key === "ArrowRight" && tag === "BUTTON") { skip(15); }
+  });
+
+  syncVolume();
+  updateTimes();
+})();

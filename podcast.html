@@ -121,12 +121,62 @@
     </div>
   </section>
 
-  <section class="coming-soon">
-    <div class="coming-soon-inner">
-      <span class="eyebrow eyebrow-live"><span class="live-dot" aria-hidden="true"></span>Podcast</span>
-      <h2>Próximamente</h2>
-      <p>Estamos preparando los primeros episodios de Sensastreaming en formato audio: entrevistas, documentales y análisis, sin cortes, para escuchar cuando quieras. Vuelve pronto.</p>
-      <a href="reportajes.html" class="link-arrow">Mientras tanto, revisa los documentales →</a>
+  <section class="podcast-episode" id="episodio">
+    <div class="podcast-intro">
+      <span class="eyebrow eyebrow-live"><span class="live-dot" aria-hidden="true"></span>Episodio</span>
+      <h2>Sensastreaming: el podcast</h2>
+      <p>Un programa conducido por Javier Vera, acompañado por Alejandro en los comentarios. En este episodio hacemos un análisis a fondo y comentamos los cuatro documentales alojados en esta página.</p>
+    </div>
+
+    <div class="audio-player" id="audioPlayer" role="group" aria-label="Reproductor del episodio">
+      <audio id="podcastAudio" preload="metadata" src="https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/HyperDeck_2610301506_0001.m4a"></audio>
+
+      <div class="audio-player-head">
+        <div class="audio-cover" aria-hidden="true">
+          <img src="https://i.imgur.com/6NUFAMf.png" alt="">
+        </div>
+        <div class="audio-meta">
+          <p class="audio-title">Sensastreaming: análisis de los 4 documentales</p>
+          <p class="audio-sub">Javier Vera · con Alejandro</p>
+        </div>
+      </div>
+
+      <div class="audio-progress-row">
+        <span class="audio-time" id="audioCurrent">0:00</span>
+        <input type="range" class="audio-range audio-seek" id="audioSeek" min="0" max="100" step="0.1" value="0" aria-label="Posición del episodio" disabled>
+        <span class="audio-time" id="audioRemaining">-0:00</span>
+      </div>
+
+      <div class="audio-controls">
+        <div class="audio-skip">
+          <button type="button" class="audio-btn" id="audioBack" aria-label="Retroceder 15 segundos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 12a9 9 0 1 0 3-6.7"></path><polyline points="3 4 3 9 8 9"></polyline></svg>
+            <span class="audio-skip-label">15</span>
+          </button>
+        </div>
+
+        <button type="button" class="audio-play" id="audioPlay" aria-label="Reproducir">
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"></path></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 5h4v14H7zM13 5h4v14h-4z"></path></svg>
+        </button>
+
+        <div class="audio-skip">
+          <button type="button" class="audio-btn" id="audioForward" aria-label="Adelantar 15 segundos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12a9 9 0 1 1-3-6.7"></path><polyline points="21 4 21 9 16 9"></polyline></svg>
+            <span class="audio-skip-label">15</span>
+          </button>
+        </div>
+
+        <div class="audio-volume">
+          <button type="button" class="audio-btn" id="audioMute" aria-label="Silenciar">
+            <svg class="icon-vol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg>
+            <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor"></polygon><line x1="22" y1="9" x2="16" y2="15"></line><line x1="16" y1="9" x2="22" y2="15"></line></svg>
+          </button>
+          <input type="range" class="audio-range audio-vol" id="audioVolume" min="0" max="1" step="0.01" value="1" aria-label="Volumen">
+        </div>
+      </div>
+
+      <p class="audio-error" id="audioError" role="alert" hidden>No se pudo cargar el audio. Revisa tu conexión e inténtalo de nuevo.</p>
     </div>
   </section>
 
