@@ -190,7 +190,7 @@
     { title: "El riesgo de limitar al periodismo", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/AvanceMordaza.mp4", image: "https://i.imgur.com/goQDQQN.jpeg", detailUrl: "detalle-fama.html" },
     { title: "Polémicas fuera de la cancha", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/docudeportes.mp4", image: "https://i.imgur.com/lAsv4dQ.jpeg", detailUrl: "detalle-deporte.html" },
     { title: "El caso que taparon los memes", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/TUFIT%20M%C3%81S%20PERIODISTA.mp4", image: "https://i.imgur.com/Mluwtng.jpeg", detailUrl: "detalle-politica.html" },
-    { title: "¿Influencers o creadores de estigmas?", videoId: "i1BO0bbKCyo", image: "https://i.imgur.com/RMKmTpX.jpeg", detailUrl: "detalle-influencers.html" }
+    { title: "Influencer: El precio de la viralidad", videoUrl: "https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/InfluencersAvance.mp4", image: "https://i.imgur.com/LVwCR66.jpeg", detailUrl: "detalle-influencers.html" }
   ];
 
   function clearResults() {

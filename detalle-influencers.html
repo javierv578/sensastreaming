@@ -12,8 +12,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<title>¿Influencers o creadores de estigmas? — Sensastreaming</title>
-<meta name="description" content="Detrás de cada tendencia viral hay una persona real, y a veces un estigma que la sigue mucho después de que el algoritmo pasó a otra cosa.…">
+<title>Influencer: El precio de la viralidad — Sensastreaming</title>
+<meta name="description" content="En los últimos años, uno de los principales exponentes al momento de distraerse, entretenerse o informarse son los denominados influencers. En plena…">
 <link rel="icon" type="image/png" href="https://i.imgur.com/6NUFAMf.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -94,31 +94,31 @@
 </header>
 
 <div class="ticker" role="marquee" aria-label="Últimas historias">
-  <span class="ticker-sr">Últimas historias: El riesgo de limitar al periodismo. Polémicas fuera de la cancha. El caso que taparon los memes. ¿Influencers o creadores de estigmas?</span>
+  <span class="ticker-sr">Últimas historias: El riesgo de limitar al periodismo. Polémicas fuera de la cancha. El caso que taparon los memes. Influencer: El precio de la viralidad</span>
   <div class="ticker-inner" aria-hidden="true">
     <div class="ticker-track">
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>El riesgo de limitar al periodismo</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>Polémicas fuera de la cancha</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>El caso que taparon los memes</span>
-      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Influencers o creadores de estigmas?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Influencer: El precio de la viralidad</span>
     </div>
     <div class="ticker-track">
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>El riesgo de limitar al periodismo</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>Polémicas fuera de la cancha</span>
       <span class="ticker-item"><span class="ticker-tag">Última hora</span>El caso que taparon los memes</span>
-      <span class="ticker-item"><span class="ticker-tag">Última hora</span>¿Influencers o creadores de estigmas?</span>
+      <span class="ticker-item"><span class="ticker-tag">Última hora</span>Influencer: El precio de la viralidad</span>
     </div>
   </div>
 </div>
 
 <main id="main-content">
 
-  <section class="detail-hero" style="background-image:url('https://i.imgur.com/RMKmTpX.jpeg');">
+  <section class="detail-hero" style="background-image:url('https://i.imgur.com/LVwCR66.jpeg');">
     <div class="detail-hero-inner">
-      <h1 class="detail-title">¿Influencers o creadores de estigmas?</h1>
+      <h1 class="detail-title">Influencer: El precio de la viralidad</h1>
 
       <div class="detail-actions">
-        <a href="https://www.youtube.com/watch?v=i1BO0bbKCyo" target="_blank" rel="noopener" class="btn btn-primary btn-play">▶ Reproducir</a>
+        <button type="button" class="btn btn-primary btn-play" id="playDocu">▶ Reproducir</button>
 
         <div class="detail-icon-row">
           <button type="button" class="detail-icon-btn" aria-label="Agregar a mi lista" title="Agregar a mi lista">
@@ -141,10 +141,17 @@
     </div>
   </section>
 
+  <section class="detail-player" id="detailPlayer" hidden>
+    <video id="docuVideo" controls playsinline preload="metadata" aria-label="Influencer: El precio de la viralidad">
+      <source src="https://pub-4d9078245ee945288b7001a9b6d5394e.r2.dev/InfluencersAvance.mp4" type="video/mp4">
+      Tu navegador no admite la reproducción de video.
+    </video>
+  </section>
+
   <section class="detail-info">
     <div class="detail-info-main">
       <p class="detail-meta">Entrevista • 2026 • 20 min • +14</p>
-      <p class="detail-synopsis">Detrás de cada tendencia viral hay una persona real, y a veces un estigma que la sigue mucho después de que el algoritmo pasó a otra cosa. Sensastreaming conversa con creadores de contenido sobre el costo humano de construir una identidad pública para vivir de ella.</p>
+      <p class="detail-synopsis">En los últimos años, uno de los principales exponentes al momento de distraerse, entretenerse o informarse son los denominados "influencers". En plena era digital, estos individuos nacen como constructores de relatos en los que informan, opinan o directamente moldean la opinión pública, en busca de contar sus vivencias o influir en el pensamiento colectivo sobre un tema.<br><br>Estas personas trabajan con su imagen, exponen sus vidas y compiten entre sí en busca de viralidad.<br><br>Para las empresas, un influencer puede ser un producto más: alguien que posee una audiencia, un alcance y una capacidad de vender. Sin embargo, ¿qué sucede cuando ese contenido se vuelve polémico, manipulador o simplemente falso?</p>
     </div>
 
     <div class="detail-credits">
@@ -250,5 +257,18 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+(function () {
+  var btn = document.getElementById("playDocu");
+  var box = document.getElementById("detailPlayer");
+  var v = document.getElementById("docuVideo");
+  if (!btn || !box || !v) return;
+  btn.addEventListener("click", function () {
+    box.hidden = false;
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+    var p = v.play(); if (p && p.catch) p.catch(function () {});
+  });
+})();
+</script>
 </body>
 </html>
