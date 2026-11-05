@@ -1262,11 +1262,9 @@ html.splash-lock body {
 }
 
 .team-role {
-  font-family: var(--font-mono);
-  font-size: .7rem;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  /* Mismo estilo de párrafo que ".about p" (cuerpo de texto estándar) */
+  color: var(--text-secondary);
+  font-size: 1rem;
   margin: 0;
 }
 
