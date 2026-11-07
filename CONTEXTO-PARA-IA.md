@@ -40,10 +40,10 @@ Elemento de marca distintivo: una cinta tipo "última hora" (`.ticker`) fija deb
 
 | # | Título | Categoría | YouTube ID |
 |---|---|---|---|
-| 1 | El riesgo de limitar al periodismo | testimonio | video MP4 (R2): AvanceMordaza.mp4 |
-| 2 | Polémicas fuera de la cancha | judicial | video MP4 (R2): docudeportes.mp4 |
-| 3 | El Cangri: un crimen que se convirtió en meme | judicial | video MP4 (R2): TUFIT MÁS PERIODISTA.mp4 |
-| 4 | Influencer: El precio de la viralidad | entrevista | video MP4 (R2): InfluencersAvance.mp4 |
+| 1 | El riesgo de limitar al periodismo | testimonio | video MP4 (R2): FINAL MORDAZA CON HGC.mp4 |
+| 2 | Fuera de los 90 minutos | judicial | video MP4 (R2): FINAL DEPORTES AHORA SI QUE SI.mp4 |
+| 3 | El Cangri: un crimen que se convirtió en meme | judicial | video MP4 (R2): CANGRI FINAL DEFINITIVO 4K SIN HACKS.mp4 |
+| 4 | Influencer: El precio de la viralidad | entrevista | video MP4 (R2): INFLUENCERS FINAL GC.mp4 |
 
 Equipo (`acerca-de.html`): Alejandro Álvarez, Gabriel Salinas, Javier Vera — cada uno con foto flotante (sin fondo circular, con una animación sutil de "levitar") y una descripción de dónde hace su práctica profesional.
 
