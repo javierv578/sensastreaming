@@ -1243,10 +1243,12 @@
     say("Enviando…");
 
     // text/plain evita la comprobación previa de CORS que Apps Script no admite
+    var payload = JSON.stringify({ email: email, website: trap ? trap.value : "" });
+
     fetch(ENDPOINT_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ email: email, website: trap ? trap.value : "" })
+      body: payload
     })
       .then(function (r) { return r.json(); })
       .then(function (res) {
@@ -1262,7 +1264,19 @@
         }
       })
       .catch(function () {
-        say("No pudimos conectar. Revisa tu conexión e inténtalo de nuevo.", "error");
+        // Algunos navegadores (p. ej. Safari) bloquean la lectura de la respuesta de Apps Script
+        // aunque la solicitud llegue. Reenviamos sin leer la respuesta; el script no duplica envíos.
+        return fetch(ENDPOINT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: payload
+        }).then(function () {
+          say("Solicitud enviada. En unos minutos deberías recibir el correo de bienvenida; si no lo ves, revisa spam.", "ok");
+          form.reset();
+        }).catch(function () {
+          say("No pudimos conectar. Revisa tu conexión e inténtalo de nuevo.", "error");
+        });
       })
       .then(function () { btn.disabled = false; });
   });
