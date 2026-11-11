@@ -1242,21 +1242,22 @@
     btn.disabled = true;
     say("Enviando…");
 
-    // JSONP: una etiqueta <script> evita los bloqueos de CORS (p. ej. en Safari)
-    var cbName = "sensaSubscribeCb" + Date.now();
-    var tag = document.createElement("script");
+    // Se carga la URL del script en un <iframe> oculto y el resultado llega por postMessage.
+    // Así se evitan los bloqueos de CORS y de <script> entre sitios.
+    var frame = document.createElement("iframe");
     var done = false;
+    var timer;
 
-    function finish(res, networkError) {
+    function finish(res, unconfirmed) {
       if (done) return;
       done = true;
       clearTimeout(timer);
-      try { delete window[cbName]; } catch (x) { window[cbName] = undefined; }
-      if (tag.parentNode) tag.parentNode.removeChild(tag);
+      window.removeEventListener("message", onMessage);
+      if (frame.parentNode) frame.parentNode.removeChild(frame);
       btn.disabled = false;
 
-      if (networkError) {
-        say("No pudimos conectar. Revisa tu conexión e inténtalo de nuevo.", "error");
+      if (unconfirmed) {
+        say("No pudimos confirmar el envío. Revisa tu correo en unos minutos; si no llega, inténtalo de nuevo.", "error");
       } else if (res && res.ok) {
         say(res.already
           ? "Este correo ya estaba suscrito. Revisa tu bandeja de entrada."
@@ -1269,14 +1270,21 @@
       }
     }
 
-    var timer = setTimeout(function () { finish(null, true); }, 25000);
-    window[cbName] = function (res) { finish(res, false); };
-    tag.onerror = function () { finish(null, true); };
-    tag.src = ENDPOINT_URL +
+    function onMessage(ev) {
+      var d = ev.data;
+      if (d && d.sensa && d.result) finish(d.result, false);
+    }
+
+    window.addEventListener("message", onMessage);
+    timer = setTimeout(function () { finish(null, true); }, 25000);
+
+    frame.style.cssText = "position:absolute;width:0;height:0;border:0;visibility:hidden";
+    frame.setAttribute("aria-hidden", "true");
+    frame.setAttribute("tabindex", "-1");
+    frame.src = ENDPOINT_URL +
       (ENDPOINT_URL.indexOf("?") === -1 ? "?" : "&") +
-      "email=" + encodeURIComponent(email) +
-      "&website=" + encodeURIComponent(trap ? trap.value : "") +
-      "&callback=" + cbName;
-    document.head.appendChild(tag);
+      "mode=frame&email=" + encodeURIComponent(email) +
+      "&website=" + encodeURIComponent(trap ? trap.value : "");
+    document.body.appendChild(frame);
   });
 })();
