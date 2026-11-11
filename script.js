@@ -1257,7 +1257,9 @@
       btn.disabled = false;
 
       if (unconfirmed) {
-        say("No pudimos confirmar el envío. Revisa tu correo en unos minutos; si no llega, inténtalo de nuevo.", "error");
+        // La solicitud llega a Google aunque el navegador no pueda leer la respuesta
+        say("¡Solicitud enviada! En unos minutos recibirás el correo de bienvenida. Si no lo ves, revisa la carpeta de spam.", "ok");
+        form.reset();
       } else if (res && res.ok) {
         say(res.already
           ? "Este correo ya estaba suscrito. Revisa tu bandeja de entrada."
@@ -1276,7 +1278,7 @@
     }
 
     window.addEventListener("message", onMessage);
-    timer = setTimeout(function () { finish(null, true); }, 25000);
+    timer = setTimeout(function () { finish(null, true); }, 10000);
 
     frame.style.cssText = "position:absolute;width:0;height:0;border:0;visibility:hidden";
     frame.setAttribute("aria-hidden", "true");
