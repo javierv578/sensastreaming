@@ -242,6 +242,21 @@
     </div>
   </section>
 
+  <section class="subscribe" id="suscripcion" aria-labelledby="subscribeTitle">
+    <div class="subscribe-inner">
+      <span class="eyebrow">Suscripción</span>
+      <h2 id="subscribeTitle">Recibe los documentales en tu correo</h2>
+      <p class="subscribe-lead">Déjanos tu correo y te enviaremos una bienvenida con todos los documentales disponibles.</p>
+      <form class="subscribe-form" id="subscribeForm" novalidate>
+        <label class="sr-only" for="subscribeEmail">Correo electrónico</label>
+        <input class="subscribe-input" type="email" id="subscribeEmail" name="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" inputmode="email" required>
+        <input type="text" name="website" id="subscribeTrap" class="subscribe-trap" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="btn btn-primary subscribe-btn" id="subscribeBtn">Suscribirme</button>
+      </form>
+      <p class="subscribe-msg" id="subscribeMsg" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">

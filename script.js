@@ -1202,3 +1202,68 @@
   syncVolume();
   updateTimes();
 })();
+
+/* ==========================================================================
+   Suscripción por correo (solo en index.html) — envía a Google Apps Script
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var form = document.getElementById("subscribeForm");
+  if (!form) return;
+
+  // Pega aquí la URL de la aplicación web de Apps Script (termina en /exec)
+  var ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbxR61WsJoxDqoOrawBemCzkSugyAYC-In14txnE3HMSab7NStxhkkBgQ7l14t8sh_GT/exec";
+
+  var input = document.getElementById("subscribeEmail");
+  var trap = document.getElementById("subscribeTrap");
+  var btn = document.getElementById("subscribeBtn");
+  var msg = document.getElementById("subscribeMsg");
+
+  function say(text, kind) {
+    msg.textContent = text;
+    msg.className = "subscribe-msg" + (kind ? " is-" + kind : "");
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = (input.value || "").trim();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      say("Escribe un correo válido, por ejemplo nombre@correo.com.", "error");
+      input.focus();
+      return;
+    }
+    if (ENDPOINT_URL.indexOf("http") !== 0) {
+      say("La suscripción aún no está configurada.", "error");
+      return;
+    }
+
+    btn.disabled = true;
+    say("Enviando…");
+
+    // text/plain evita la comprobación previa de CORS que Apps Script no admite
+    fetch(ENDPOINT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ email: email, website: trap ? trap.value : "" })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.ok) {
+          say(res.already
+            ? "Este correo ya estaba suscrito. Revisa tu bandeja de entrada."
+            : "¡Listo! Te enviamos un correo de bienvenida. Si no lo ves, revisa la carpeta de spam.", "ok");
+          form.reset();
+        } else if (res && res.error === "invalid_email") {
+          say("Ese correo no parece válido. Revisa que esté bien escrito.", "error");
+        } else {
+          say("No pudimos completar la suscripción. Inténtalo de nuevo en unos minutos.", "error");
+        }
+      })
+      .catch(function () {
+        say("No pudimos conectar. Revisa tu conexión e inténtalo de nuevo.", "error");
+      })
+      .then(function () { btn.disabled = false; });
+  });
+})();

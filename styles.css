@@ -2164,3 +2164,23 @@ html.splash-lock body {
   .audio-volume { grid-column: 1 / -1; justify-self: stretch; width: auto; }
 }
 @media (hover: none) { .audio-volume .audio-vol { display: none; } .audio-volume { grid-column: auto; width: auto; } .audio-controls { grid-template-columns: auto auto auto auto; } }
+
+/* ---- Suscripción por correo (index.html) ---- */
+.subscribe { padding: 4rem max(4vw, var(--safe-right)) 4.5rem max(4vw, var(--safe-left)); background: var(--bg-void); border-top: 1px solid rgba(255,255,255,.05); }
+.subscribe-inner { max-width: 620px; margin: 0 auto; }
+.subscribe h2 { font-size: clamp(1.5rem, 2.8vw, 2rem); margin: 0 0 .9rem; }
+.subscribe-lead { color: var(--text-secondary); margin: 0 0 1.5rem; }
+.subscribe-form { display: flex; gap: .75rem; flex-wrap: wrap; }
+.subscribe-input {
+  flex: 1 1 260px; min-width: 0; padding: .85rem 1.1rem; font: inherit; font-size: 1rem;
+  color: var(--text-primary); background: var(--bg-surface); border: 1px solid var(--border-strong);
+  border-radius: 999px;
+}
+.subscribe-input::placeholder { color: var(--text-muted); }
+.subscribe-input:focus-visible { outline: 2px solid var(--accent-crimson); outline-offset: 2px; }
+.subscribe-btn { flex: 0 0 auto; cursor: pointer; }
+.subscribe-btn:disabled { opacity: .6; cursor: default; }
+.subscribe-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.subscribe-msg { min-height: 1.4em; margin: 1rem 0 0; font-size: .95rem; color: var(--text-secondary); }
+.subscribe-msg.is-ok { color: var(--accent-crimson); }
+.subscribe-msg.is-error { color: #ff9b9b; }
