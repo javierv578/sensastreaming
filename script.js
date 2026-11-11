@@ -1242,42 +1242,41 @@
     btn.disabled = true;
     say("Enviando…");
 
-    // text/plain evita la comprobación previa de CORS que Apps Script no admite
-    var payload = JSON.stringify({ email: email, website: trap ? trap.value : "" });
+    // JSONP: una etiqueta <script> evita los bloqueos de CORS (p. ej. en Safari)
+    var cbName = "sensaSubscribeCb" + Date.now();
+    var tag = document.createElement("script");
+    var done = false;
 
-    fetch(ENDPOINT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: payload
-    })
-      .then(function (r) { return r.json(); })
-      .then(function (res) {
-        if (res && res.ok) {
-          say(res.already
-            ? "Este correo ya estaba suscrito. Revisa tu bandeja de entrada."
-            : "¡Listo! Te enviamos un correo de bienvenida. Si no lo ves, revisa la carpeta de spam.", "ok");
-          form.reset();
-        } else if (res && res.error === "invalid_email") {
-          say("Ese correo no parece válido. Revisa que esté bien escrito.", "error");
-        } else {
-          say("No pudimos completar la suscripción. Inténtalo de nuevo en unos minutos.", "error");
-        }
-      })
-      .catch(function () {
-        // Algunos navegadores (p. ej. Safari) bloquean la lectura de la respuesta de Apps Script
-        // aunque la solicitud llegue. Reenviamos sin leer la respuesta; el script no duplica envíos.
-        return fetch(ENDPOINT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: payload
-        }).then(function () {
-          say("Solicitud enviada. En unos minutos deberías recibir el correo de bienvenida; si no lo ves, revisa spam.", "ok");
-          form.reset();
-        }).catch(function () {
-          say("No pudimos conectar. Revisa tu conexión e inténtalo de nuevo.", "error");
-        });
-      })
-      .then(function () { btn.disabled = false; });
+    function finish(res, networkError) {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      try { delete window[cbName]; } catch (x) { window[cbName] = undefined; }
+      if (tag.parentNode) tag.parentNode.removeChild(tag);
+      btn.disabled = false;
+
+      if (networkError) {
+        say("No pudimos conectar. Revisa tu conexión e inténtalo de nuevo.", "error");
+      } else if (res && res.ok) {
+        say(res.already
+          ? "Este correo ya estaba suscrito. Revisa tu bandeja de entrada."
+          : "¡Listo! Te enviamos un correo de bienvenida. Si no lo ves, revisa la carpeta de spam.", "ok");
+        form.reset();
+      } else if (res && res.error === "invalid_email") {
+        say("Ese correo no parece válido. Revisa que esté bien escrito.", "error");
+      } else {
+        say("No pudimos completar la suscripción. Inténtalo de nuevo en unos minutos.", "error");
+      }
+    }
+
+    var timer = setTimeout(function () { finish(null, true); }, 25000);
+    window[cbName] = function (res) { finish(res, false); };
+    tag.onerror = function () { finish(null, true); };
+    tag.src = ENDPOINT_URL +
+      (ENDPOINT_URL.indexOf("?") === -1 ? "?" : "&") +
+      "email=" + encodeURIComponent(email) +
+      "&website=" + encodeURIComponent(trap ? trap.value : "") +
+      "&callback=" + cbName;
+    document.head.appendChild(tag);
   });
 })();
