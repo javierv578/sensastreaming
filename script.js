@@ -1246,8 +1246,10 @@
     // no puede leer la respuesta, pero la solicitud sí llega y el script envía el correo.
     var url = ENDPOINT_URL +
       (ENDPOINT_URL.indexOf("?") === -1 ? "?" : "&") +
-      "email=" + encodeURIComponent(email) +
-      "&website=" + encodeURIComponent(trap ? trap.value : "");
+      "email=" + encodeURIComponent(email) + "&src=web&t=" + Date.now();
+
+    // Segunda vía (pixel): llega aunque fetch esté bloqueado. El script no reenvía si ya existe.
+    try { new Image().src = url + "&via=img"; } catch (err) {}
 
     fetch(url, { method: "GET", mode: "no-cors", cache: "no-store", credentials: "omit" })
       .then(function () {
