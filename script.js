@@ -1242,51 +1242,22 @@
     btn.disabled = true;
     say("Enviando…");
 
-    // Se carga la URL del script en un <iframe> oculto y el resultado llega por postMessage.
-    // Así se evitan los bloqueos de CORS y de <script> entre sitios.
-    var frame = document.createElement("iframe");
-    var done = false;
-    var timer;
+    // Misma petición que funciona al abrir el link directo. Con no-cors el navegador
+    // no puede leer la respuesta, pero la solicitud sí llega y el script envía el correo.
+    var url = ENDPOINT_URL +
+      (ENDPOINT_URL.indexOf("?") === -1 ? "?" : "&") +
+      "email=" + encodeURIComponent(email) +
+      "&website=" + encodeURIComponent(trap ? trap.value : "");
 
-    function finish(res, unconfirmed) {
-      if (done) return;
-      done = true;
-      clearTimeout(timer);
-      window.removeEventListener("message", onMessage);
-      if (frame.parentNode) frame.parentNode.removeChild(frame);
-      btn.disabled = false;
-
-      if (unconfirmed) {
-        // La solicitud llega a Google aunque el navegador no pueda leer la respuesta
+    fetch(url, { method: "GET", mode: "no-cors", cache: "no-store", credentials: "omit" })
+      .then(function () {
+        btn.disabled = false;
         say("¡Solicitud enviada! En unos minutos recibirás el correo de bienvenida. Si no lo ves, revisa la carpeta de spam.", "ok");
         form.reset();
-      } else if (res && res.ok) {
-        say(res.already
-          ? "Este correo ya estaba suscrito. Revisa tu bandeja de entrada."
-          : "¡Listo! Te enviamos un correo de bienvenida. Si no lo ves, revisa la carpeta de spam.", "ok");
-        form.reset();
-      } else if (res && res.error === "invalid_email") {
-        say("Ese correo no parece válido. Revisa que esté bien escrito.", "error");
-      } else {
-        say("No pudimos completar la suscripción. Inténtalo de nuevo en unos minutos.", "error");
-      }
-    }
-
-    function onMessage(ev) {
-      var d = ev.data;
-      if (d && d.sensa && d.result) finish(d.result, false);
-    }
-
-    window.addEventListener("message", onMessage);
-    timer = setTimeout(function () { finish(null, true); }, 10000);
-
-    frame.style.cssText = "position:absolute;width:0;height:0;border:0;visibility:hidden";
-    frame.setAttribute("aria-hidden", "true");
-    frame.setAttribute("tabindex", "-1");
-    frame.src = ENDPOINT_URL +
-      (ENDPOINT_URL.indexOf("?") === -1 ? "?" : "&") +
-      "mode=frame&email=" + encodeURIComponent(email) +
-      "&website=" + encodeURIComponent(trap ? trap.value : "");
-    document.body.appendChild(frame);
+      })
+      .catch(function () {
+        btn.disabled = false;
+        say("No pudimos conectar. Revisa tu conexión e inténtalo de nuevo.", "error");
+      });
   });
 })();
